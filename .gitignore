@@ -24,3 +24,4 @@ dist-ssr
 *.sw?
 
 stitch_sign_up_page
+.env
