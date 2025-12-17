@@ -7,6 +7,14 @@ export interface Bid {
     createdAt: string;
 }
 
+export interface BidHistoryItem {
+    id: string;
+    price: string | number;
+    createdAt: string;
+    userId: string;
+    userName: string;
+}
+
 export interface PlaceBidForm {
     itemId: string;
     price: number;

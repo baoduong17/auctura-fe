@@ -1,9 +1,11 @@
 // types/item.ts
+import { BidHistoryItem } from './bid';
+
 export interface Item {
     id: string;
     name: string;
     description: string;
-    startingPrice: number;
+    startingPrice: string | number;
     currentBid?: number;
     totalBids?: number;
     startTime: string;
@@ -15,6 +17,10 @@ export interface Item {
     highestBidderId?: string;
     highestBidderFirstName?: string;
     highestBidderLastName?: string;
+    winnerId?: string;
+    winnerName?: string;
+    finalPrice?: string | number;
+    bidHistory?: BidHistoryItem[];
     createdAt?: string;
     updatedAt?: string;
     isLocked?: boolean;

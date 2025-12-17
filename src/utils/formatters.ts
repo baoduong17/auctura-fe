@@ -41,3 +41,20 @@ export function formatCountdown(endTime: string | Date): string {
     if (mins > 0) return `${mins}m ${secs}s`;
     return `${secs}s`;
 }
+
+export function formatDistanceToNow(date: string | Date): string {
+    const now = new Date();
+    const past = new Date(date);
+    const totalSeconds = differenceInSeconds(now, past);
+
+    if (totalSeconds < 60) return 'Just now';
+
+    const mins = Math.floor(totalSeconds / 60);
+    if (mins < 60) return `${mins} ${mins === 1 ? 'min' : 'mins'} ago`;
+
+    const hours = Math.floor(mins / 60);
+    if (hours < 24) return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`;
+
+    const days = Math.floor(hours / 24);
+    return `${days} ${days === 1 ? 'day' : 'days'} ago`;
+}
