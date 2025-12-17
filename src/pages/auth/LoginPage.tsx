@@ -7,11 +7,11 @@ import { loginSchema, type LoginFormValues } from '@/schemas/auth.schemas';
 import { authService } from '@/services/auth.service';
 import { useAuthStore } from '@/store/auth.store';
 import { handleApiError } from '@/utils/error-handler';
+import { AuthLayout } from '@/components/auth/AuthLayout';
+import { FormField } from '@/components/forms/FormField';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { COLORS } from '@/constants/theme';
 import { toast } from 'sonner';
 
 export function LoginPage() {
@@ -42,71 +42,53 @@ export function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#1a1a1a] flex items-center justify-center p-4">
-      <Card className="w-full max-w-md bg-[#242424] border-gray-800">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl text-white">Welcome back</CardTitle>
-          <CardDescription className="text-gray-400">
-            Enter your credentials to access your account
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-gray-200">
-                Email
-              </Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="john@example.com"
-                className="bg-[#1a1a1a] border-gray-700 text-white"
-                {...register('email')}
-              />
-              {errors.email && (
-                <p className="text-sm text-red-500">{errors.email.message}</p>
-              )}
-            </div>
+    <AuthLayout
+      title="Welcome back"
+      description="Enter your credentials to access your account"
+    >
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <FormField
+          id="email"
+          label="Email"
+          type="email"
+          placeholder="john@example.com"
+          error={errors.email?.message}
+          register={register('email')}
+          required
+        />
 
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-gray-200">
-                Password
-              </Label>
-              <Input
-                id="password"
-                type="password"
-                className="bg-[#1a1a1a] border-gray-700 text-white"
-                {...register('password')}
-              />
-              {errors.password && (
-                <p className="text-sm text-red-500">{errors.password.message}</p>
-              )}
-            </div>
+        <FormField
+          id="password"
+          label="Password"
+          type="password"
+          error={errors.password?.message}
+          register={register('password')}
+          required
+        />
 
-            <Button
-              type="submit"
-              className="w-full bg-[#256af4] hover:bg-[#1e5dd9] text-white"
-              disabled={isLoading}
-            >
-              {isLoading ? (
-                <>
-                  <LoadingSpinner size="sm" />
-                  <span className="ml-2">Signing in...</span>
-                </>
-              ) : (
-                'Sign in'
-              )}
-            </Button>
+        <Button
+          type="submit"
+          className="w-full text-white"
+          style={{ backgroundColor: COLORS.primary }}
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <>
+              <LoadingSpinner size="sm" />
+              <span className="ml-2">Signing in...</span>
+            </>
+          ) : (
+            'Sign in'
+          )}
+        </Button>
 
-            <div className="text-center text-sm text-gray-400">
-              Don't have an account?{' '}
-              <Link to="/register" className="text-[#256af4] hover:underline">
-                Sign up
-              </Link>
-            </div>
-          </form>
-        </CardContent>
-      </Card>
-    </div>
+        <div className="text-center text-sm text-gray-400">
+          Don't have an account?{' '}
+          <Link to="/register" style={{ color: COLORS.primary }} className="hover:underline">
+            Sign up
+          </Link>
+        </div>
+      </form>
+    </AuthLayout>
   );
 }

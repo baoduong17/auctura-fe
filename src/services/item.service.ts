@@ -18,7 +18,7 @@ export const itemService = {
     },
 
     async getNonBiddedItems(filters?: ItemFilters): Promise<GetNonBiddedItemsResponseDto> {
-        const response = await apiClient.get('/items/non-bidded', { params: filters });
+        const response = await apiClient.get('/items/filters', { params: filters });
         return response.data;
     },
 

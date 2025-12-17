@@ -9,6 +9,7 @@ export interface Item {
     startTime: string;
     endTime: string;
     ownerId: string;
+    ownerName?: string;
     ownerFirstName?: string;
     ownerLastName?: string;
     highestBidderId?: string;
@@ -37,6 +38,9 @@ export interface UpdateItemForm {
 
 export interface ItemFilters {
     name?: string;
+    ownerName?: string;
+    startTime?: string;
+    endTime?: string;
     startingPriceFrom?: number;
     startingPriceTo?: number;
 }
