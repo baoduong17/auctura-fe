@@ -23,7 +23,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Eye, Edit, Lock, MoreVertical, Plus, Package } from 'lucide-react';
-import { formatDateTime } from '@/utils/formatters';
+import { formatDateTime, parseDate } from '@/utils/formatters';
 
 export function MyItemsPage() {
   const { user } = useAuthStore();
@@ -92,8 +92,8 @@ export function MyItemsPage() {
             <p className="text-2xl font-bold mt-1 text-white">
               {data.filter((item) => {
                 const now = new Date();
-                const startTime = new Date(item.startTime);
-                const endTime = new Date(item.endTime);
+                const startTime = parseDate(item.startTime);
+                const endTime = parseDate(item.endTime);
                 return startTime <= now && endTime > now;
               }).length}
             </p>

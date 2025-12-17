@@ -7,7 +7,7 @@ import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { User, Mail, Phone, Calendar, Settings, Package, Gavel, Trophy } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { formatDate } from '@/utils/formatters';
+import { formatDate, parseDate } from '@/utils/formatters';
 import { useItems, useWinningBids } from '@/hooks/useItems';
 
 export function ProfilePage() {
@@ -29,7 +29,7 @@ export function ProfilePage() {
 
   const totalBids = myItems?.reduce((sum, item) => sum + (item.totalBids || 0), 0) || 0;
   const activeItems = myItems?.filter(
-    (item) => !item.isLocked && new Date(item.endTime) > new Date()
+    (item) => !item.isLocked && parseDate(item.endTime) > new Date()
   ).length || 0;
 
   return (
@@ -188,7 +188,7 @@ export function ProfilePage() {
                   </div>
                   <Badge variant="outline">
                     {myItems?.filter(
-                      (item) => new Date(item.endTime) < new Date()
+                      (item) => parseDate(item.endTime) < new Date()
                     ).length || 0}
                   </Badge>
                 </div>

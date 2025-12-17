@@ -7,11 +7,11 @@ import { useAuthStore } from '@/store/auth.store';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { ProfileFormFields } from '@/components/forms/ProfileFormFields';
+import { PasswordFormFields } from '@/components/forms/PasswordFormFields';
+import { NotificationSettings } from '@/components/forms/NotificationSettings';
 import { Save, User, Lock, Bell } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -21,7 +21,7 @@ const profileSchema = z.object({
   lastName: z.string().min(1, 'Last name is required'),
   email: z.string().email('Invalid email address'),
   phoneNumber: z.string().optional(),
-  birthday: z.string().optional(),
+  birthday: z.date().optional(),
   gender: z.enum(['male', 'female', 'other']).optional(),
 });
 
@@ -48,6 +48,7 @@ export function SettingsPage() {
     handleSubmit: handleSubmitProfile,
     formState: { errors: profileErrors },
     setValue: setProfileValue,
+    control: controlProfile,
   } = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
@@ -55,7 +56,7 @@ export function SettingsPage() {
       lastName: user?.lastName || '',
       email: user?.email || '',
       phoneNumber: user?.phoneNumber || '',
-      birthday: user?.birthday || '',
+      birthday: user?.birthday ? new Date(user.birthday) : undefined,
       gender: user?.gender || undefined,
     },
   });
@@ -70,11 +71,10 @@ export function SettingsPage() {
   });
 
   const onSubmitProfile = async (data: ProfileFormData) => {
-    // TODO: Implement API call to update profile
     setIsSubmittingProfile(true);
     try {
       console.log('Update profile:', data);
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
       toast.success('Profile updated successfully');
     } catch (error) {
       toast.error('Failed to update profile');
@@ -84,11 +84,10 @@ export function SettingsPage() {
   };
 
   const onSubmitPassword = async (_data: PasswordFormData) => {
-    // TODO: Implement API call to change password
     setIsSubmittingPassword(true);
     try {
       console.log('Change password');
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
       toast.success('Password changed successfully');
       resetPassword();
     } catch (error) {
@@ -109,7 +108,6 @@ export function SettingsPage() {
   return (
     <div className="min-h-screen bg-[#1a1a1a] text-white">
       <div className="container mx-auto py-8 px-4">
-        {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold">Settings</h1>
           <p className="text-gray-400 mt-1">Manage your account preferences</p>
@@ -131,7 +129,6 @@ export function SettingsPage() {
             </TabsTrigger>
           </TabsList>
 
-          {/* Profile Tab */}
           <TabsContent value="profile">
             <Card className="bg-[#242424] border-gray-800">
               <CardHeader>
@@ -142,100 +139,14 @@ export function SettingsPage() {
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmitProfile(onSubmitProfile)} className="space-y-6">
-                  {/* Name Fields */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="firstName" className="text-gray-200">
-                        First Name *
-                      </Label>
-                      <Input
-                        id="firstName"
-                        {...registerProfile('firstName')}
-                        className="bg-[#1a1a1a] border-gray-700 text-white"
-                      />
-                      {profileErrors.firstName && (
-                        <p className="text-red-500 text-sm">{profileErrors.firstName.message}</p>
-                      )}
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="lastName" className="text-gray-200">
-                        Last Name *
-                      </Label>
-                      <Input
-                        id="lastName"
-                        {...registerProfile('lastName')}
-                        className="bg-[#1a1a1a] border-gray-700 text-white"
-                      />
-                      {profileErrors.lastName && (
-                        <p className="text-red-500 text-sm">{profileErrors.lastName.message}</p>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Email */}
-                  <div className="space-y-2">
-                    <Label htmlFor="email" className="text-gray-200">
-                      Email Address *
-                    </Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      {...registerProfile('email')}
-                      disabled
-                      className="bg-[#1a1a1a] border-gray-700 text-white opacity-50 cursor-not-allowed"
-                    />
-                    <p className="text-xs text-gray-400">Email cannot be changed</p>
-                  </div>
-
-                  {/* Phone Number */}
-                  <div className="space-y-2">
-                    <Label htmlFor="phoneNumber" className="text-gray-200">
-                      Phone Number
-                    </Label>
-                    <Input
-                      id="phoneNumber"
-                      type="tel"
-                      {...registerProfile('phoneNumber')}
-                      className="bg-[#1a1a1a] border-gray-700 text-white"
-                    />
-                  </div>
-
-                  {/* Birthday */}
-                  <div className="space-y-2">
-                    <Label htmlFor="birthday" className="text-gray-200">
-                      Birthday
-                    </Label>
-                    <Input
-                      id="birthday"
-                      type="date"
-                      {...registerProfile('birthday')}
-                      className="bg-[#1a1a1a] border-gray-700 text-white"
-                    />
-                  </div>
-
-                  {/* Gender */}
-                  <div className="space-y-2">
-                    <Label htmlFor="gender" className="text-gray-200">
-                      Gender
-                    </Label>
-                    <Select
-                      defaultValue={user.gender}
-                      onValueChange={(value) => setProfileValue('gender', value as any)}
-                    >
-                      <SelectTrigger className="bg-[#1a1a1a] border-gray-700 text-white">
-                        <SelectValue placeholder="Select gender" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-[#242424] border-gray-800">
-                        <SelectItem value="male">Male</SelectItem>
-                        <SelectItem value="female">Female</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-
+                  <ProfileFormFields
+                    register={registerProfile}
+                    errors={profileErrors}
+                    control={controlProfile}
+                    setValue={setProfileValue}
+                    userGender={user.gender}
+                  />
                   <Separator className="bg-gray-800" />
-
                   <div className="flex justify-end">
                     <Button 
                       type="submit" 
@@ -260,7 +171,6 @@ export function SettingsPage() {
             </Card>
           </TabsContent>
 
-          {/* Security Tab */}
           <TabsContent value="security">
             <Card className="bg-[#242424] border-gray-800">
               <CardHeader>
@@ -271,56 +181,8 @@ export function SettingsPage() {
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmitPassword(onSubmitPassword)} className="space-y-6">
-                  <div className="space-y-2">
-                    <Label htmlFor="currentPassword" className="text-gray-200">
-                      Current Password *
-                    </Label>
-                    <Input
-                      id="currentPassword"
-                      type="password"
-                      {...registerPassword('currentPassword')}
-                      className="bg-[#1a1a1a] border-gray-700 text-white"
-                    />
-                    {passwordErrors.currentPassword && (
-                      <p className="text-red-500 text-sm">{passwordErrors.currentPassword.message}</p>
-                    )}
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="newPassword" className="text-gray-200">
-                      New Password *
-                    </Label>
-                    <Input
-                      id="newPassword"
-                      type="password"
-                      {...registerPassword('newPassword')}
-                      className="bg-[#1a1a1a] border-gray-700 text-white"
-                    />
-                    {passwordErrors.newPassword && (
-                      <p className="text-red-500 text-sm">{passwordErrors.newPassword.message}</p>
-                    )}
-                    <p className="text-xs text-gray-400">
-                      Must be at least 8 characters long
-                    </p>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="confirmPassword" className="text-gray-200">
-                      Confirm New Password *
-                    </Label>
-                    <Input
-                      id="confirmPassword"
-                      type="password"
-                      {...registerPassword('confirmPassword')}
-                      className="bg-[#1a1a1a] border-gray-700 text-white"
-                    />
-                    {passwordErrors.confirmPassword && (
-                      <p className="text-red-500 text-sm">{passwordErrors.confirmPassword.message}</p>
-                    )}
-                  </div>
-
+                  <PasswordFormFields register={registerPassword} errors={passwordErrors} />
                   <Separator className="bg-gray-800" />
-
                   <div className="flex justify-end">
                     <Button 
                       type="submit" 
@@ -345,7 +207,6 @@ export function SettingsPage() {
             </Card>
           </TabsContent>
 
-          {/* Notifications Tab */}
           <TabsContent value="notifications">
             <Card className="bg-[#242424] border-gray-800">
               <CardHeader>
@@ -355,56 +216,8 @@ export function SettingsPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-[#1a1a1a] rounded-lg">
-                  <div>
-                    <p className="font-medium">Bid Notifications</p>
-                    <p className="text-sm text-gray-400">
-                      Get notified when someone bids on your items
-                    </p>
-                  </div>
-                  <Button variant="outline" size="sm">
-                    Enable
-                  </Button>
-                </div>
-
-                <div className="flex items-center justify-between p-4 bg-[#1a1a1a] rounded-lg">
-                  <div>
-                    <p className="font-medium">Auction Ending Soon</p>
-                    <p className="text-sm text-gray-400">
-                      Get alerts when your auctions are about to end
-                    </p>
-                  </div>
-                  <Button variant="outline" size="sm">
-                    Enable
-                  </Button>
-                </div>
-
-                <div className="flex items-center justify-between p-4 bg-[#1a1a1a] rounded-lg">
-                  <div>
-                    <p className="font-medium">Outbid Alerts</p>
-                    <p className="text-sm text-gray-400">
-                      Get notified when someone outbids you
-                    </p>
-                  </div>
-                  <Button variant="outline" size="sm">
-                    Enable
-                  </Button>
-                </div>
-
-                <div className="flex items-center justify-between p-4 bg-[#1a1a1a] rounded-lg">
-                  <div>
-                    <p className="font-medium">Email Newsletter</p>
-                    <p className="text-sm text-gray-400">
-                      Receive updates and promotions via email
-                    </p>
-                  </div>
-                  <Button variant="outline" size="sm">
-                    Enable
-                  </Button>
-                </div>
-
+                <NotificationSettings />
                 <Separator className="bg-gray-800" />
-
                 <p className="text-xs text-gray-400">
                   Note: Notification settings are currently in development and will be available soon.
                 </p>

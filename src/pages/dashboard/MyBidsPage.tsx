@@ -20,7 +20,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Eye, Trophy, Gavel, DollarSign } from 'lucide-react';
-import { formatDateTime } from '@/utils/formatters';
+import { formatDateTime, parseDate } from '@/utils/formatters';
 
 export function MyBidsPage() {
   const { user } = useAuthStore();
@@ -64,9 +64,18 @@ export function MyBidsPage() {
 
   const totalActiveBids = myBids.length;
   const currentlyWinning = myBids.filter(
-    (item) => new Date(item.endTime) > new Date()
+    (item) => parseDate(item.endTime) > new Date()
   ).length;
-  const totalBidAmount = myBids.reduce((sum, item) => sum + (item.currentBid || item.startingPrice), 0);
+  const totalBidAmount = myBids.reduce((sum, item) => {
+    const currentBid = typeof item.currentBid === 'string' 
+      ? parseFloat(item.currentBid) 
+      : (item.currentBid || 0);
+    const startingPrice = typeof item.startingPrice === 'string' 
+      ? parseFloat(item.startingPrice) 
+      : item.startingPrice;
+    const price = currentBid || startingPrice;
+    return sum + price;
+  }, 0);
 
   return (
     <div className="space-y-6">
@@ -121,11 +130,10 @@ export function MyBidsPage() {
             <TableBody>
               {myBids.map((item) => {
                 const isWinning = item.highestBidderId === user?.id;
-                const isEnded = new Date(item.endTime) < new Date();
+                const isEnded = parseDate(item.endTime) < new Date();
 
                 return (
-                  <TableRow key={item.id} className="border-gray-800">
-                    <TableCell className="font-medium">{item.name}</TableCell>
+                  <TableRow key={item.id} className="border-gray-800">\n                    <TableCell className="font-medium">{item.name}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
                         <PriceDisplay amount={item.currentBid || item.startingPrice} showIcon={false} />

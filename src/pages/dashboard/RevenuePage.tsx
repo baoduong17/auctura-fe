@@ -8,20 +8,20 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { EmptyState } from '@/components/ui/EmptyState';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { DatePicker } from '@/components/ui/date-picker';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DollarSign, TrendingUp, Package } from 'lucide-react';
 
 export function RevenuePage() {
   const { user } = useAuthStore();
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState<Date | undefined>(undefined);
+  const [endDate, setEndDate] = useState<Date | undefined>(undefined);
 
   const { data, isLoading, error, refetch } = useRevenue(
     user?.id || '',
-    startDate || '',
-    endDate || ''
+    startDate ? startDate.toISOString().split('T')[0] : '',
+    endDate ? endDate.toISOString().split('T')[0] : ''
   );
 
   const handleApplyFilter = () => {
@@ -29,8 +29,8 @@ export function RevenuePage() {
   };
 
   const handleClearFilter = () => {
-    setStartDate('');
-    setEndDate('');
+    setStartDate(undefined);
+    setEndDate(undefined);
   };
 
   if (isLoading) {
@@ -96,24 +96,21 @@ export function RevenuePage() {
               <Label htmlFor="startDate" className="text-gray-200">
                 Start Date
               </Label>
-              <Input
-                id="startDate"
-                type="date"
+              <DatePicker
                 value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                className="bg-[#1a1a1a] border-gray-700 text-white"
+                onChange={setStartDate}
+                placeholder="Select start date"
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="endDate" className="text-gray-200">
                 End Date
               </Label>
-              <Input
-                id="endDate"
-                type="date"
+              <DatePicker
                 value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                className="bg-[#1a1a1a] border-gray-700 text-white"
+                onChange={setEndDate}
+                placeholder="Select end date"
+                minDate={startDate}
               />
             </div>
             <div className="flex gap-2">

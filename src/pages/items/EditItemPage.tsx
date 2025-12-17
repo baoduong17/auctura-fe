@@ -1,7 +1,7 @@
 // pages/items/EditItemPage.tsx
 import { useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useItem, useUpdateItem } from '@/hooks/useItems';
 import { createItemSchema } from '@/schemas/item.schemas';
@@ -13,9 +13,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { DateTimePicker } from '@/components/ui/datetime-picker';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, Save } from 'lucide-react';
 import { format } from 'date-fns';
+import { parseDate } from '@/utils/formatters';
 
 export function EditItemPage() {
   const { id } = useParams<{ id: string }>();
@@ -28,6 +30,7 @@ export function EditItemPage() {
     handleSubmit,
     formState: { errors },
     reset,
+    control,
   } = useForm<CreateItemForm>({
     resolver: zodResolver(createItemSchema),
   });
@@ -35,23 +38,13 @@ export function EditItemPage() {
   // Pre-fill form when item data loads
   useEffect(() => {
     if (item) {
-      // Convert ISO string to datetime-local format
-      const startTimeLocal = format(new Date(item.startTime), "yyyy-MM-dd'T'HH:mm");
-      const endTimeLocal = format(new Date(item.endTime), "yyyy-MM-dd'T'HH:mm");
-
       reset({
         name: item.name,
         description: item.description,
         startingPrice: item.startingPrice,
-        startTime: new Date(item.startTime),
-        endTime: new Date(item.endTime),
+        startTime: parseDate(item.startTime),
+        endTime: parseDate(item.endTime),
       });
-
-      // Manually set datetime-local values
-      const startTimeInput = document.getElementById('startTime') as HTMLInputElement;
-      const endTimeInput = document.getElementById('endTime') as HTMLInputElement;
-      if (startTimeInput) startTimeInput.value = startTimeLocal;
-      if (endTimeInput) endTimeInput.value = endTimeLocal;
     }
   }, [item, reset]);
 
@@ -178,13 +171,17 @@ export function EditItemPage() {
                   <Label htmlFor="startTime" className="text-gray-200">
                     Auction Start Time *
                   </Label>
-                  <Input
-                    id="startTime"
-                    type="datetime-local"
-                    {...register('startTime', {
-                      setValueAs: (value) => value ? new Date(value) : undefined,
-                    })}
-                    className="bg-[#1a1a1a] border-gray-700 text-white"
+                  <Controller
+                    name="startTime"
+                    control={control}
+                    render={({ field }) => (
+                      <DateTimePicker
+                        value={field.value}
+                        onChange={field.onChange}
+                        placeholder="Select start date and time"
+                        disabled={hasBids}
+                      />
+                    )}
                   />
                   {errors.startTime && (
                     <p className="text-red-500 text-sm">{errors.startTime.message}</p>
@@ -196,13 +193,17 @@ export function EditItemPage() {
                   <Label htmlFor="endTime" className="text-gray-200">
                     Auction End Time *
                   </Label>
-                  <Input
-                    id="endTime"
-                    type="datetime-local"
-                    {...register('endTime', {
-                      setValueAs: (value) => value ? new Date(value) : undefined,
-                    })}
-                    className="bg-[#1a1a1a] border-gray-700 text-white"
+                  <Controller
+                    name="endTime"
+                    control={control}
+                    render={({ field }) => (
+                      <DateTimePicker
+                        value={field.value}
+                        onChange={field.onChange}
+                        placeholder="Select end date and time"
+                        disabled={hasBids}
+                      />
+                    )}
                   />
                   {errors.endTime && (
                     <p className="text-red-500 text-sm">{errors.endTime.message}</p>

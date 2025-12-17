@@ -1,6 +1,6 @@
 // pages/items/CreateItemPage.tsx
 import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useCreateItem } from '@/hooks/useItems';
 import { createItemSchema } from '@/schemas/item.schemas';
@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
+import { DateTimePicker } from '@/components/ui/datetime-picker';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowLeft, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -21,6 +22,7 @@ export function CreateItemPage() {
   const {
     register,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<CreateItemForm>({
     resolver: zodResolver(createItemSchema),
@@ -121,13 +123,17 @@ export function CreateItemPage() {
                   <Label htmlFor="startTime" className="text-gray-200">
                     Auction Start Time *
                   </Label>
-                  <Input
-                    id="startTime"
-                    type="datetime-local"
-                    {...register('startTime', {
-                      setValueAs: (value) => value ? new Date(value) : undefined,
-                    })}
-                    className="bg-[#1a1a1a] border-gray-700 text-white"
+                  <Controller
+                    name="startTime"
+                    control={control}
+                    render={({ field }) => (
+                      <DateTimePicker
+                        value={field.value}
+                        onChange={field.onChange}
+                        placeholder="Select start date and time"
+                        minDate={new Date()}
+                      />
+                    )}
                   />
                   {errors.startTime && (
                     <p className="text-red-500 text-sm">{errors.startTime.message}</p>
@@ -142,13 +148,17 @@ export function CreateItemPage() {
                   <Label htmlFor="endTime" className="text-gray-200">
                     Auction End Time *
                   </Label>
-                  <Input
-                    id="endTime"
-                    type="datetime-local"
-                    {...register('endTime', {
-                      setValueAs: (value) => value ? new Date(value) : undefined,
-                    })}
-                    className="bg-[#1a1a1a] border-gray-700 text-white"
+                  <Controller
+                    name="endTime"
+                    control={control}
+                    render={({ field }) => (
+                      <DateTimePicker
+                        value={field.value}
+                        onChange={field.onChange}
+                        placeholder="Select end date and time"
+                        minDate={new Date()}
+                      />
+                    )}
                   />
                   {errors.endTime && (
                     <p className="text-red-500 text-sm">{errors.endTime.message}</p>
