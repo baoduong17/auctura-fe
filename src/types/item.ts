@@ -26,6 +26,20 @@ export interface Item {
     isLocked?: boolean;
 }
 
+// Item structure for owner's items list (simplified DTO)
+export interface OwnerItem {
+    id: string;
+    name: string;
+    description: string;
+    ownerId: string;
+    currentPrice: number;
+    bidsCount: number;
+    startTime: string;
+    endTime: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
 export interface CreateItemForm {
     name: string;
     description: string;
@@ -76,4 +90,4 @@ export type GetNonBiddedItemsResponseDto = Item[];
 
 export interface GetItemByIdResponseDto extends Item { }
 
-export type GetItemsByOwnerIdResponseDto = Item[];
+export type GetItemsByOwnerIdResponseDto = OwnerItem[];

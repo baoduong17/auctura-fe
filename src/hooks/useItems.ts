@@ -20,10 +20,10 @@ export const useItem = (id: string) => {
     });
 };
 
-export const useMyItems = (ownerId: string) => {
+export const useMyItems = (ownerId: string | undefined) => {
     return useQuery({
         queryKey: ['items', 'owner', ownerId],
-        queryFn: () => itemService.getByOwnerId(ownerId),
+        queryFn: () => itemService.getByOwnerId(ownerId!),
         enabled: !!ownerId,
     });
 };
