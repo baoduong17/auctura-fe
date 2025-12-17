@@ -20,7 +20,7 @@ export function RootLayout() {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="sticky top-0 z-40 flex h-14 shrink-0 items-center gap-2 border-b border-gray-800 bg-[#242424] px-4">
+        <header className="sticky top-0 z-40 flex h-14 shrink-0 items-center gap-2 bg-[#1a1a1a] px-4">
           <SidebarTrigger />
           <div className="flex-1" />
         </header>
