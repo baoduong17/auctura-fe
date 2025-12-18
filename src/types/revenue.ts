@@ -9,10 +9,18 @@ export interface RevenueData {
 export interface GetRevenueByOwnerIdResponseDto extends RevenueData { }
 
 export interface WinningBidItem {
-    itemId: string;
-    itemName: string;
-    winningBid: number;
-    bidTime: string;
+    id: string;
+    name: string;
+    description: string;
+    ownerId: string;
+    ownerName: string;
+    startingPrice: string;
+    startTime: string;
+    endTime: string;
+    finalPrice: string;
+    winnerId: string;
+    createdAt: string;
+    updatedAt: string;
 }
 
 export type GetWinningBidsByUserIdResponseDto = WinningBidItem[];

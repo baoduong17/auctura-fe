@@ -103,8 +103,6 @@ export function ItemDetailPage() {
       <div className="container mx-auto py-8 px-4">
         {/* Header with Breadcrumb */}
         <PageHeader
-          title={item.name}
-          description={`Starting price: $${startingPrice.toFixed(2)}${item.totalBids ? ` | Current: $${currentPrice.toFixed(2)}` : ''}`}
           breadcrumbs={
             isOwner
               ? [
@@ -117,8 +115,6 @@ export function ItemDetailPage() {
                   { label: item.name },
                 ]
           }
-          icon={Package}
-          iconColor="text-[#256af4]"
           actions={
             <Link to={isOwner ? '/dashboard/my-items' : '/marketplace'}>
               <Button variant="ghost">
