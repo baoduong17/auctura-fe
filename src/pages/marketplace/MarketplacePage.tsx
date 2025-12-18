@@ -5,6 +5,7 @@ import { ItemCard } from '@/components/items';
 import { ItemGridSkeleton } from '@/components/ui/LoadingSpinner';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { PageHeader } from '@/components/layout';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -53,10 +54,16 @@ export function MarketplacePage() {
     <div className="min-h-screen text-white" style={{ backgroundColor: COLORS.background }}>
       <div className="container mx-auto py-8 px-4">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold mb-2">Marketplace</h1>
-          <p className="text-gray-400">Browse and bid on available items</p>
-        </div>
+        <PageHeader
+          title="Marketplace"
+          description="Browse and bid on available items"
+          breadcrumbs={[
+            { label: 'Marketplace' },
+          ]}
+          icon={Package}
+          iconColor="text-[#256af4]"
+          className="mb-8"
+        />
 
         {/* Search & Filters */}
         <div className="mb-6 space-y-4">

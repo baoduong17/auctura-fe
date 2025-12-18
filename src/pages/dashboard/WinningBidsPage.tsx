@@ -5,6 +5,7 @@ import { PriceDisplay } from '@/components/ui/PriceDisplay';
 import { TableSkeleton } from '@/components/ui/LoadingSpinner';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { PageHeader } from '@/components/layout';
 import { Button } from '@/components/ui/button';
 import {
   Table,
@@ -45,15 +46,13 @@ export function WinningBidsPage() {
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold flex items-center gap-2">
-              <Trophy className="h-8 w-8 text-yellow-500" />
-              Winning Bids
-            </h1>
-            <p className="text-gray-400 mt-1">Items you've won in auctions</p>
-          </div>
-        </div>
+        <PageHeader
+          description="Items you've won in auctions"
+          breadcrumbs={[
+            { label: 'Dashboard', href: '/dashboard/my-items' },
+            { label: 'Winning Bids' },
+          ]}
+        />
         <TableSkeleton rows={5} />
       </div>
     );
@@ -74,24 +73,24 @@ export function WinningBidsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold flex items-center gap-2">
-            <Trophy className="h-8 w-8 text-yellow-500" />
-            Winning Bids
-          </h1>
-          <p className="text-gray-400 mt-1">Items you've won in auctions</p>
-        </div>
-        {winningItems.length > 0 && (
-          <Button
-            onClick={handleDownloadPDF}
-            className="bg-[#256af4] hover:bg-[#1e5dd9]"
-          >
-            <Download className="h-4 w-4 mr-2" />
-            Export PDF
-          </Button>
-        )}
-      </div>
+      <PageHeader
+        description="Items you've won in auctions"
+        breadcrumbs={[
+          { label: 'Dashboard', href: '/dashboard/my-items' },
+          { label: 'Winning Bids' },
+        ]}
+        actions={
+          winningItems.length > 0 && (
+            <Button
+              onClick={handleDownloadPDF}
+              className="bg-[#256af4] hover:bg-[#1e5dd9]"
+            >
+              <Download className="h-4 w-4 mr-2" />
+              Export PDF
+            </Button>
+          )
+        }
+      />
 
       {/* Winning Items Table */}
       {winningItems.length > 0 ? (

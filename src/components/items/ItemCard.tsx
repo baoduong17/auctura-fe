@@ -72,7 +72,7 @@ export function ItemCard({ item, showActions = true, className }: ItemCardProps)
           {/* Current Price */}
           <ItemInfoRow
             label="Current Price"
-            value={<PriceDisplay amount={item.currentBid || item.startingPrice} size="md" />}
+            value={<PriceDisplay amount={item.finalPrice} size="md" />}
           />
 
           {/* Total Bids */}

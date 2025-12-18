@@ -8,6 +8,7 @@ import { createItemSchema } from '@/schemas/item.schemas';
 import type { CreateItemForm } from '@/types/item';
 import { ItemDetailSkeleton, LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { ErrorState } from '@/components/ui/ErrorState';
+import { PageHeader } from '@/components/layout';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -15,7 +16,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { DateTimePicker } from '@/components/ui/datetime-picker';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, Save } from 'lucide-react';
+import { ArrowLeft, Save, Edit } from 'lucide-react';
 import { format } from 'date-fns';
 import { parseDate } from '@/utils/formatters';
 
@@ -95,6 +96,21 @@ export function EditItemPage() {
   return (
     <div className="min-h-screen bg-[#1a1a1a] text-white">
       <div className="container mx-auto py-8 px-4">
+        {/* Header with Breadcrumb */}
+        <PageHeader
+          title={`Edit: ${item.name}`}
+          description="Update your item details below"
+          breadcrumbs={[
+            { label: 'Dashboard', href: '/dashboard/my-items' },
+            { label: 'My Items', href: '/dashboard/my-items' },
+            { label: item.name, href: `/items/${id}` },
+            { label: 'Edit' },
+          ]}
+          icon={Edit}
+          iconColor="text-[#256af4]"
+          className="mb-6"
+        />
+        
         {/* Back Button */}
         <Link to="/dashboard/my-items">
           <Button variant="ghost" className="mb-6">

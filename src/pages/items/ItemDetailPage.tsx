@@ -12,6 +12,7 @@ import { BidFormSection } from '@/components/items/BidFormSection';
 import { WinnerSection } from '@/components/items/WinnerSection';
 import { ItemDetailSkeleton } from '@/components/ui/LoadingSpinner';
 import { ErrorPage } from '@/components/ui/ErrorState';
+import { PageHeader } from '@/components/layout';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -24,7 +25,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { ArrowLeft, Lock } from 'lucide-react';
+import { ArrowLeft, Lock, Package } from 'lucide-react';
 import { placeBidSchema } from '@/schemas/bid.schemas';
 import type { PlaceBidForm } from '@/types/bid';
 import { canPlaceBid } from '@/utils/validators';
@@ -100,12 +101,34 @@ export function ItemDetailPage() {
   return (
     <div className="min-h-screen bg-[#1a1a1a] text-white">
       <div className="container mx-auto py-8 px-4">
-        <Link to="/marketplace">
-          <Button variant="ghost" className="mb-6 hover:bg-[#242424]">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Marketplace
-          </Button>
-        </Link>
+        {/* Header with Breadcrumb */}
+        <PageHeader
+          title={item.name}
+          description={`Starting price: $${startingPrice.toFixed(2)}${item.totalBids ? ` | Current: $${currentPrice.toFixed(2)}` : ''}`}
+          breadcrumbs={
+            isOwner
+              ? [
+                  { label: 'Dashboard', href: '/dashboard/my-items' },
+                  { label: 'My Items', href: '/dashboard/my-items' },
+                  { label: item.name },
+                ]
+              : [
+                  { label: 'Marketplace', href: '/marketplace' },
+                  { label: item.name },
+                ]
+          }
+          icon={Package}
+          iconColor="text-[#256af4]"
+          actions={
+            <Link to={isOwner ? '/dashboard/my-items' : '/marketplace'}>
+              <Button variant="ghost">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                {isOwner ? 'Back to My Items' : 'Back to Marketplace'}
+              </Button>
+            </Link>
+          }
+          className="mb-6"
+        />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}

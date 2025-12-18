@@ -7,6 +7,7 @@ import { TableSkeleton } from '@/components/ui/LoadingSpinner';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { PageHeader } from '@/components/layout';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { DatePicker } from '@/components/ui/date-picker';
@@ -36,10 +37,13 @@ export function RevenuePage() {
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">Revenue Dashboard</h1>
-          <p className="text-gray-400 mt-1">Track your earnings from sold items</p>
-        </div>
+        <PageHeader
+          description="Track your earnings from sold items"
+          breadcrumbs={[
+            { label: 'Dashboard', href: '/dashboard/my-items' },
+            { label: 'Revenue' },
+          ]}
+        />
         <Card className="bg-[#242424] border-gray-800">
           <CardHeader>
             <CardTitle className="text-lg">Filter by Date Range</CardTitle>
@@ -80,10 +84,13 @@ export function RevenuePage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold">Revenue Dashboard</h1>
-        <p className="text-gray-400 mt-1">Track your earnings from sold items</p>
-      </div>
+      <PageHeader
+        description="Track your earnings from sold items"
+        breadcrumbs={[
+          { label: 'Dashboard', href: '/dashboard/my-items' },
+          { label: 'Revenue' },
+        ]}
+      />
 
       {/* Date Range Filter */}
       <Card className="bg-[#242424] border-gray-800">

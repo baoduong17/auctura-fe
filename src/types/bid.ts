@@ -29,3 +29,20 @@ export interface BidResponseDto {
     id: string;
     message: string;
 }
+
+export interface MyBidItem {
+    id: string;
+    itemId: string;
+    itemName: string;
+    itemEndTime: string;
+    userId: string;
+    price: string;
+    createdAt: string;
+}
+
+export interface MyBidsResponse {
+    activeBidsCount: number;
+    activeWinningBidsCount: number;
+    activeWinningBidsSum: number;
+    bids: MyBidItem[];
+}

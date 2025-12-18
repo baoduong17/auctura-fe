@@ -7,6 +7,7 @@ import { StatusBadge } from '@/components/ui/StatusBadge';
 import { TableSkeleton } from '@/components/ui/LoadingSpinner';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { PageHeader } from '@/components/layout';
 import { Button } from '@/components/ui/button';
 import {
   Table,
@@ -37,18 +38,21 @@ export function MyItemsPage() {
   if (isLoading) {
     return (
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-white">My Items</h1>
-            <p className="text-gray-400 mt-1">Manage your auction items</p>
-          </div>
-          <Link to="/items/create">
-            <Button className="bg-[#256af4] hover:bg-[#1e5dd9]">
-              <Plus className="h-4 w-4 mr-2" />
-              Create Item
-            </Button>
-          </Link>
-        </div>
+        <PageHeader
+          description="Manage your auction items"
+          breadcrumbs={[
+            { label: 'Dashboard', href: '/dashboard/my-items' },
+            { label: 'My Items' },
+          ]}
+          actions={
+            <Link to="/items/create">
+              <Button className="bg-[#256af4] hover:bg-[#1e5dd9]">
+                <Plus className="h-4 w-4 mr-2" />
+                Create Item
+              </Button>
+            </Link>
+          }
+        />
         <TableSkeleton rows={5} />
       </div>
     );
@@ -67,18 +71,21 @@ export function MyItemsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-white">My Items</h1>
-          <p className="text-gray-400 mt-1">Manage your auction items</p>
-        </div>
-        <Link to="/items/create">
-          <Button className="bg-[#256af4] hover:bg-[#1e5dd9]">
-            <Plus className="h-4 w-4 mr-2" />
-            Create Item
-          </Button>
-        </Link>
-      </div>
+      <PageHeader
+        description="Manage your auction items"
+        breadcrumbs={[
+          { label: 'Dashboard', href: '/dashboard/my-items' },
+          { label: 'My Items' },
+        ]}
+        actions={
+          <Link to="/items/create">
+            <Button className="bg-[#256af4] hover:bg-[#1e5dd9]">
+              <Plus className="h-4 w-4 mr-2" />
+              Create Item
+            </Button>
+          </Link>
+        }
+      />
 
       {/* Stats */}
       {data && data.length > 0 && (

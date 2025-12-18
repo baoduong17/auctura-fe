@@ -1,5 +1,6 @@
 // pages/profile/ProfilePage.tsx
 import { useAuthStore } from '@/store/auth.store';
+import { PageHeader } from '@/components/layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
@@ -36,15 +37,24 @@ export function ProfilePage() {
     <div className="min-h-screen bg-[#1a1a1a] text-white">
       <div className="container mx-auto py-8 px-4">
         {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-3xl font-bold">My Profile</h1>
-          <Link to="/settings">
-            <Button variant="outline">
-              <Settings className="h-4 w-4 mr-2" />
-              Settings
-            </Button>
-          </Link>
-        </div>
+        <PageHeader
+          title="My Profile"
+          description={`Welcome back, ${user.firstName}!`}
+          breadcrumbs={[
+            { label: 'Profile' },
+          ]}
+          icon={User}
+          iconColor="text-[#256af4]"
+          actions={
+            <Link to="/settings">
+              <Button variant="outline">
+                <Settings className="h-4 w-4 mr-2" />
+                Settings
+              </Button>
+            </Link>
+          }
+          className="mb-8"
+        />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Profile Card */}

@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAuthStore } from '@/store/auth.store';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { PageHeader } from '@/components/layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -12,7 +13,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ProfileFormFields } from '@/components/forms/ProfileFormFields';
 import { PasswordFormFields } from '@/components/forms/PasswordFormFields';
 import { NotificationSettings } from '@/components/forms/NotificationSettings';
-import { Save, User, Lock, Bell } from 'lucide-react';
+import { Save, User, Lock, Bell, Settings } from 'lucide-react';
 import { toast } from 'sonner';
 
 // Validation schemas
@@ -108,10 +109,18 @@ export function SettingsPage() {
   return (
     <div className="min-h-screen bg-[#1a1a1a] text-white">
       <div className="container mx-auto py-8 px-4">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold">Settings</h1>
-          <p className="text-gray-400 mt-1">Manage your account preferences</p>
-        </div>
+        {/* Header */}
+        <PageHeader
+          title="Settings"
+          description="Manage your account settings and preferences"
+          breadcrumbs={[
+            { label: 'Profile', href: '/profile' },
+            { label: 'Settings' },
+          ]}
+          icon={Settings}
+          iconColor="text-[#256af4]"
+          className="mb-8"
+        />
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="bg-[#242424] border border-gray-800">

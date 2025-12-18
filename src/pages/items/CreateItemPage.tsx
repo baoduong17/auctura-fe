@@ -6,6 +6,7 @@ import { useCreateItem } from '@/hooks/useItems';
 import { createItemSchema } from '@/schemas/item.schemas';
 import type { CreateItemForm } from '@/types/item';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { PageHeader } from '@/components/layout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -47,6 +48,20 @@ export function CreateItemPage() {
   return (
     <div className="min-h-screen bg-[#1a1a1a] text-white">
       <div className="container mx-auto py-8 px-4">
+        {/* Header with Breadcrumb */}
+        <PageHeader
+          title="Create New Item"
+          description="Fill in the details below to list your item for auction"
+          breadcrumbs={[
+            { label: 'Dashboard', href: '/dashboard/my-items' },
+            { label: 'My Items', href: '/dashboard/my-items' },
+            { label: 'Create Item' },
+          ]}
+          icon={Plus}
+          iconColor="text-[#256af4]"
+          className="mb-6"
+        />
+
         {/* Back Button */}
         <Link to="/dashboard/my-items">
           <Button variant="ghost" className="mb-6">
