@@ -5,6 +5,7 @@ import { PriceDisplay } from '@/components/ui/PriceDisplay';
 import { TableSkeleton } from '@/components/ui/LoadingSpinner';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { SmallStatCard } from '@/components/stats/SmallStatCard';
 import { Button } from '@/components/ui/button';
 import {
   Table,
@@ -78,57 +79,48 @@ export function WinningBidsPage() {
 
       {winningItems.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-[#242424] rounded-lg p-4 border border-gray-800">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-400 text-sm">Total Items Won</p>
-                <p className="text-2xl font-bold mt-1 text-white">{winningItems.length}</p>
-              </div>
-              <Trophy className="h-8 w-8 text-yellow-500" />
-            </div>
-          </div>
-          <div className="bg-[#242424] rounded-lg p-4 border border-gray-800">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-400 text-sm">Total Spent</p>
-                <p className="text-2xl font-bold mt-1 text-white">
-                  <PriceDisplay
-                    amount={winningItems.reduce((sum, item) => {
-                      const price = typeof item.finalPrice === 'string' 
-                        ? parseFloat(item.finalPrice) 
-                        : item.finalPrice;
-                      return sum + price;
-                    }, 0)}
-                    showIcon={false}
-                    showCurrency={false}
-                    size="lg"
-                  />
-                </p>
-              </div>
-              <DollarSign className="h-8 w-8 text-green-500" />
-            </div>
-          </div>
-          <div className="bg-[#242424] rounded-lg p-4 border border-gray-800">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-400 text-sm">Average Win Price</p>
-                <p className="text-2xl font-bold mt-1 text-white">
-                  <PriceDisplay
-                    amount={winningItems.reduce((sum, item) => {
-                      const price = typeof item.finalPrice === 'string' 
-                        ? parseFloat(item.finalPrice) 
-                        : item.finalPrice;
-                      return sum + price;
-                    }, 0) / winningItems.length}
-                    showIcon={false}
-                    showCurrency={false}
-                    size="lg"
-                  />
-                </p>
-              </div>
-              <Target className="h-8 w-8 text-blue-500" />
-            </div>
-          </div>
+          <SmallStatCard
+            title="Total Items Won"
+            value={winningItems.length}
+            icon={Trophy}
+            iconClassName="h-8 w-8 text-yellow-500"
+          />
+          <SmallStatCard
+            title="Total Spent"
+            value={
+              <PriceDisplay
+                amount={winningItems.reduce((sum, item) => {
+                  const price = typeof item.finalPrice === 'string' 
+                    ? parseFloat(item.finalPrice) 
+                    : item.finalPrice;
+                  return sum + price;
+                }, 0)}
+                showIcon={false}
+                showCurrency={false}
+                size="lg"
+              />
+            }
+            icon={DollarSign}
+            iconClassName="h-8 w-8 text-green-500"
+          />
+          <SmallStatCard
+            title="Average Win Price"
+            value={
+              <PriceDisplay
+                amount={winningItems.reduce((sum, item) => {
+                  const price = typeof item.finalPrice === 'string' 
+                    ? parseFloat(item.finalPrice) 
+                    : item.finalPrice;
+                  return sum + price;
+                }, 0) / winningItems.length}
+                showIcon={false}
+                showCurrency={false}
+                size="lg"
+              />
+            }
+            icon={Target}
+            iconClassName="h-8 w-8 text-blue-500"
+          />
         </div>
       )}
 

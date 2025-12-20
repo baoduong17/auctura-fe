@@ -6,6 +6,7 @@ import { StatusBadge } from '@/components/ui/StatusBadge';
 import { TableSkeleton } from '@/components/ui/LoadingSpinner';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { SmallStatCard } from '@/components/stats/SmallStatCard';
 import { Button } from '@/components/ui/button';
 import {
   Table,
@@ -64,53 +65,35 @@ export function MyItemsPage() {
 
       {data && data.length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <div className="bg-[#242424] rounded-lg p-4 border border-gray-800">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-400 text-sm">Total Items</p>
-                <p className="text-2xl font-bold mt-1 text-white">{data.length}</p>
-              </div>
-              <Package className="h-8 w-8 text-blue-500" />
-            </div>
-          </div>
-          <div className="bg-[#242424] rounded-lg p-4 border border-gray-800">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-400 text-sm">Active Auctions</p>
-                <p className="text-2xl font-bold mt-1 text-white">
-                  {data.filter((item) => {
-                    const now = new Date();
-                    const startTime = parseDate(item.startTime);
-                    const endTime = parseDate(item.endTime);
-                    return startTime <= now && endTime > now;
-                  }).length}
-                </p>
-              </div>
-              <Activity className="h-8 w-8 text-green-500" />
-            </div>
-          </div>
-          <div className="bg-[#242424] rounded-lg p-4 border border-gray-800">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-400 text-sm">Total Bids</p>
-                <p className="text-2xl font-bold mt-1 text-white">
-                  {data.reduce((sum, item) => sum + item.bidsCount, 0)}
-                </p>
-              </div>
-              <Gavel className="h-8 w-8 text-purple-500" />
-            </div>
-          </div>
-          <div className="bg-[#242424] rounded-lg p-4 border border-gray-800">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-gray-400 text-sm">Items with Bids</p>
-                <p className="text-2xl font-bold mt-1 text-white">
-                  {data.filter((item) => item.bidsCount > 0).length}
-                </p>
-              </div>
-              <Target className="h-8 w-8 text-yellow-500" />
-            </div>
-          </div>
+          <SmallStatCard
+            title="Total Items"
+            value={data.length}
+            icon={Package}
+            iconClassName="h-8 w-8 text-blue-500"
+          />
+          <SmallStatCard
+            title="Active Auctions"
+            value={data.filter((item) => {
+              const now = new Date();
+              const startTime = parseDate(item.startTime);
+              const endTime = parseDate(item.endTime);
+              return startTime <= now && endTime > now;
+            }).length}
+            icon={Activity}
+            iconClassName="h-8 w-8 text-green-500"
+          />
+          <SmallStatCard
+            title="Total Bids"
+            value={data.reduce((sum, item) => sum + item.bidsCount, 0)}
+            icon={Gavel}
+            iconClassName="h-8 w-8 text-purple-500"
+          />
+          <SmallStatCard
+            title="Items with Bids"
+            value={data.filter((item) => item.bidsCount > 0).length}
+            icon={Target}
+            iconClassName="h-8 w-8 text-yellow-500"
+          />
         </div>
       )}
 

@@ -6,6 +6,7 @@ import { CountdownTimer } from '@/components/ui/CountdownTimer';
 import { TableSkeleton } from '@/components/ui/LoadingSpinner';
 import { ErrorState } from '@/components/ui/ErrorState';
 import { EmptyState } from '@/components/ui/EmptyState';
+import { SmallStatCard } from '@/components/stats/SmallStatCard';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -17,7 +18,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Eye, Trophy, Gavel, DollarSign, Clock } from 'lucide-react';
+import { Eye, Trophy, Gavel, DollarSign } from 'lucide-react';
 import { formatDateTime, parseDate } from '@/utils/formatters';
 
 export function MyBidsPage() {
@@ -58,37 +59,27 @@ export function MyBidsPage() {
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-[#242424] rounded-lg p-4 border border-gray-800">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-400 text-sm">Total Active Bids</p>
-              <p className="text-2xl font-bold mt-1 text-white">{activeBidsCount}</p>
-            </div>
-            <Gavel className="h-8 w-8 text-purple-500" />
-          </div>
-        </div>
+        <SmallStatCard
+          title="Total Active Bids"
+          value={activeBidsCount}
+          icon={Gavel}
+          iconClassName="h-8 w-8 text-purple-500"
+        />
 
-        <div className="bg-[#242424] rounded-lg p-4 border border-gray-800">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-400 text-sm">Currently Winning</p>
-              <p className="text-2xl font-bold mt-1 text-green-500">{activeWinningBidsCount}</p>
-            </div>
-            <Trophy className="h-8 w-8 text-yellow-500" />
-          </div>
-        </div>
+        <SmallStatCard
+          title="Currently Winning"
+          value={activeWinningBidsCount}
+          icon={Trophy}
+          iconClassName="h-8 w-8 text-yellow-500"
+          valueClassName="text-2xl font-bold mt-1 text-green-500"
+        />
 
-        <div className="bg-[#242424] rounded-lg p-4 border border-gray-800">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-gray-400 text-sm">Total Bid Amount</p>
-              <p className="text-2xl font-bold mt-1 text-white">
-                <PriceDisplay amount={activeWinningBidsSum} size="lg" showIcon={false} showCurrency={false} />
-              </p>
-            </div>
-            <DollarSign className="h-8 w-8 text-green-500" />
-          </div>
-        </div>
+        <SmallStatCard
+          title="Total Bid Amount"
+          value={<PriceDisplay amount={activeWinningBidsSum} size="lg" showIcon={false} showCurrency={false} />}
+          icon={DollarSign}
+          iconClassName="h-8 w-8 text-green-500"
+        />
       </div>
 
       {bids.length > 0 ? (
@@ -131,7 +122,6 @@ export function MyBidsPage() {
                         </Badge>
                       ) : (
                         <div className="flex items-center gap-2 text-sm text-gray-400">
-                          <Clock className="h-4 w-4" />
                           <CountdownTimer endTime={bid.itemEndTime} />
                         </div>
                       )}

@@ -1,34 +1,30 @@
-import { Card, CardContent } from '@/components/ui/card';
 import type { LucideIcon } from 'lucide-react';
+import type { ReactNode } from 'react';
 
 interface SmallStatCardProps {
   title: string;
-  value: string | number;
+  value: string | number | ReactNode;
   icon: LucideIcon;
-  iconColor: string;
-  iconBgColor: string;
+  iconClassName?: string;
+  valueClassName?: string;
 }
 
 export function SmallStatCard({ 
   title, 
   value, 
   icon: Icon, 
-  iconColor, 
-  iconBgColor 
+  iconClassName = 'h-8 w-8',
+  valueClassName = 'text-2xl font-bold mt-1 text-white'
 }: SmallStatCardProps) {
   return (
-    <Card className="bg-[#242424] border-gray-800">
-      <CardContent className="pt-6">
-        <div className="flex items-center gap-4">
-          <div className={`h-10 w-10 rounded-full ${iconBgColor} flex items-center justify-center`}>
-            <Icon className={`h-5 w-5 ${iconColor}`} />
-          </div>
-          <div>
-            <p className="text-gray-400 text-sm">{title}</p>
-            <p className="text-xl font-bold">{value}</p>
-          </div>
+    <div className="bg-[#242424] rounded-lg p-4 border border-gray-800">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-gray-400 text-sm">{title}</p>
+          <p className={valueClassName}>{value}</p>
         </div>
-      </CardContent>
-    </Card>
+        <Icon className={iconClassName} />
+      </div>
+    </div>
   );
 }
