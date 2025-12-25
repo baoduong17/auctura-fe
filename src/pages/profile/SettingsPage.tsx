@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -14,6 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ProfileFormFields } from '@/components/forms/ProfileFormFields';
 import { PasswordFormFields } from '@/components/forms/PasswordFormFields';
 import { NotificationSettings } from '@/components/forms/NotificationSettings';
+import { AvatarUpload } from '@/components/forms/AvatarUpload';
 import { Save, User, Lock, Bell } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -34,6 +35,8 @@ export function SettingsPage() {
   const [activeTab, setActiveTab] = useState('profile');
   const [isSubmittingProfile, setIsSubmittingProfile] = useState(false);
   const [isSubmittingPassword, setIsSubmittingPassword] = useState(false);
+  const [avatarUrl, setAvatarUrl] = useState<string | undefined>(user?.picture);
+  const [avatarId, setAvatarId] = useState<string | null>(null);
 
   const {
     register: registerProfile,
@@ -62,13 +65,46 @@ export function SettingsPage() {
     resolver: zodResolver(changePasswordSchema),
   });
 
-  const onSubmitProfile = async (_: ProfileFormData) => {
+  // Sync avatarUrl with user.picture when user data changes
+  useEffect(() => {
+    if (user?.picture) {
+      setAvatarUrl(user.picture);
+    }
+  }, [user?.picture]);
+
+  const onSubmitProfile = async (data: ProfileFormData) => {
     setIsSubmittingProfile(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Prepare update data
+      const updateData = {
+        firstName: data.firstName,
+        lastName: data.lastName,
+        phoneNumber: data.phoneNumber,
+        birthday: data.birthday?.toISOString().split('T')[0],
+        gender: data.gender,
+        ...(avatarId && { avatarId }), // Include avatarId if it exists
+      };
+
+      // Call update profile API
+      await authService.updateProfile(updateData);
+      
+      // Get fresh user data from API
+      const updatedUser = await authService.getCurrentUser();
+      
+      // Update auth store with fresh user data
+      useAuthStore.getState().updateUser(updatedUser);
+      
+      // Update avatar URL from fresh user data
+      if (updatedUser.picture) {
+        setAvatarUrl(updatedUser.picture);
+      }
+      
       toast.success('Profile updated successfully');
+      
+      // Clear avatarId after successful update
+      setAvatarId(null);
     } catch (error) {
-      toast.error('Failed to update profile');
+      handleApiError(error);
     } finally {
       setIsSubmittingProfile(false);
     }
@@ -85,6 +121,12 @@ export function SettingsPage() {
     } finally {
       setIsSubmittingPassword(false);
     }
+  };
+
+  const handleAvatarUploadSuccess = (fileUrl: string, id: string) => {
+    setAvatarUrl(fileUrl);
+    setAvatarId(id);
+    toast.info('Avatar uploaded. Click "Save Changes" to update your profile.');
   };
 
   if (!user) {
@@ -123,6 +165,12 @@ export function SettingsPage() {
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmitProfile(onSubmitProfile)} className="space-y-6">
+                  <AvatarUpload
+                    currentAvatarUrl={avatarUrl}
+                    onUploadSuccess={handleAvatarUploadSuccess}
+                    userInitials={`${user.firstName?.[0] || ''}${user.lastName?.[0] || ''}`}
+                  />
+                  <Separator className="bg-gray-800" />
                   <ProfileFormFields
                     register={registerProfile}
                     errors={profileErrors}

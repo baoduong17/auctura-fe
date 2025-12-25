@@ -28,7 +28,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   Gavel,
   ShoppingCart,
@@ -183,6 +183,7 @@ export function AppSidebar() {
                   <SidebarMenuButton size="lg" asChild>
                     <Link to="/profile">
                       <Avatar className="h-8 w-8">
+                        <AvatarImage src={user.picture} />
                         <AvatarFallback className="bg-[#256af4] text-white">
                           {getInitials(user.firstName, user.lastName)}
                         </AvatarFallback>

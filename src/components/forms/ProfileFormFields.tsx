@@ -117,9 +117,8 @@ export function ProfileFormFields({
             <SelectValue placeholder="Select gender" />
           </SelectTrigger>
           <SelectContent className="bg-[#242424] border-gray-800">
-            <SelectItem value="male">Male</SelectItem>
-            <SelectItem value="female">Female</SelectItem>
-            <SelectItem value="other">Other</SelectItem>
+            <SelectItem value="MALE">Male</SelectItem>
+            <SelectItem value="FEMALE">Female</SelectItem>
           </SelectContent>
         </Select>
       </div>

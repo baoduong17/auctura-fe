@@ -7,6 +7,7 @@ import type {
     AppleTokenFormDto,
     RefreshTokenFormDto,
     ChangePasswordDto,
+    UpdateProfileDto,
     AuthResultDto,
     CurrentUserDto,
 } from '@/types/auth';
@@ -44,6 +45,11 @@ export const authService = {
 
     async changePassword(data: ChangePasswordDto): Promise<void> {
         const response = await apiClient.put('/auths/change-password', data);
+        return response.data;
+    },
+
+    async updateProfile(data: UpdateProfileDto): Promise<CurrentUserDto> {
+        const response = await apiClient.put('/users/update-profile', data);
         return response.data;
     },
 };

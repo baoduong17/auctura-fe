@@ -67,6 +67,15 @@ export interface ChangePasswordDto {
     confirmNewPassword: string;
 }
 
+export interface UpdateProfileDto {
+    firstName?: string;
+    lastName?: string;
+    avatarId?: string;
+    birthday?: string;
+    gender?: Gender;
+    phoneNumber?: string;
+}
+
 export interface AuthResultDto {
     token: {
         accessToken: string;

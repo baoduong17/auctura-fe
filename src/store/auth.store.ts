@@ -13,6 +13,7 @@ interface AuthStore {
 
     setUser: (user: User | null) => void;
     setTokens: (tokens: AuthTokens | null) => void;
+    updateUser: (user: User) => void;
     login: (tokens: AuthTokens, user: User) => void;
     logout: () => void;
     checkAuth: () => Promise<void>;
@@ -36,6 +37,10 @@ export const useAuthStore = create<AuthStore>()(
                     clearStoredTokens();
                 }
                 set({ tokens });
+            },
+
+            updateUser: (user) => {
+                set({ user, isAuthenticated: true });
             },
 
             login: (tokens, user) => {

@@ -1,6 +1,6 @@
 import { useAuthStore } from '@/store/auth.store';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
@@ -39,6 +39,7 @@ export function ProfilePage() {
               <CardHeader className="text-center">
                 <div className="flex justify-center mb-4">
                   <Avatar className="h-24 w-24">
+                    <AvatarImage src={user.picture} />
                     <AvatarFallback className="bg-[#256af4] text-white text-2xl">
                       {getInitials()}
                     </AvatarFallback>
