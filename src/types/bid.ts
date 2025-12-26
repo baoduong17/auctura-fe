@@ -13,6 +13,7 @@ export interface BidHistoryItem {
     createdAt: string;
     userId: string;
     userName: string;
+    userPicture?: string;
 }
 
 export interface PlaceBidForm {

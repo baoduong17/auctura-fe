@@ -37,7 +37,6 @@ export function EditItemPage() {
     resolver: zodResolver(createItemSchema),
   });
 
-  // Pre-fill form when item data loads
   useEffect(() => {
     if (item) {
       reset({
@@ -48,7 +47,6 @@ export function EditItemPage() {
         endTime: parseDate(item.endTime),
       });
 
-      // Set initial images from item media
       if (item.medias && item.medias.length > 0) {
         const images = item.medias.map((m) => ({ id: m.id, url: m.fileUrl }));
         setInitialImages(images);
@@ -83,7 +81,6 @@ export function EditItemPage() {
 
   if (error || !item) return <ErrorState message="Failed to load item" />;
 
-  // Check if item has bids (cannot edit if has bids)
   if ((item.totalBids ?? 0) > 0) {
     return (
       <div className="max-w-2xl">

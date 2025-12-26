@@ -115,14 +115,6 @@ export function ItemDetailPage() {
                 />
               </CardContent>
             </Card>
-
-            {item.winnerId && item.winnerName && item.finalPrice && (
-              <WinnerSection winnerName={item.winnerName} finalPrice={currentPrice} />
-            )}
-
-            {item.bidHistory && item.bidHistory.length > 0 && (
-              <BidHistoryTable bidHistory={item.bidHistory} />
-            )}
           </div>
 
           <div className="space-y-6">
@@ -155,6 +147,10 @@ export function ItemDetailPage() {
                   </Button>
                 </CardContent>
               </Card>
+            )}
+
+            {item.bidHistory && item.bidHistory.length > 0 && (
+              <BidHistoryTable bidHistory={item.bidHistory} />
             )}
           </div>
         </div>

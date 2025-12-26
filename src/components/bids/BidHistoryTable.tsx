@@ -14,6 +14,7 @@ import { PriceDisplay } from '@/components/ui/PriceDisplay';
 import { formatDistanceToNow } from '@/utils/formatters';
 import type { BidHistoryItem } from '@/types/bid';
 import { User } from 'lucide-react';
+import { AvatarImage } from '@radix-ui/react-avatar';
 
 interface BidHistoryTableProps {
   bidHistory: BidHistoryItem[];
@@ -87,6 +88,7 @@ export function BidHistoryTable({ bidHistory, totalBids }: BidHistoryTableProps)
                   <TableCell className="py-3">
                     <div className="flex items-center gap-3">
                       <Avatar className="h-8 w-8">
+                        <AvatarImage src={bid.userPicture} />
                         <AvatarFallback 
                           className={isHighest ? "bg-green-500 text-white" : "bg-[#256af4] text-white"}
                         >

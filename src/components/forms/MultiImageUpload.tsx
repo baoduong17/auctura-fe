@@ -1,11 +1,11 @@
-import { useState, useRef, useCallback } from 'react';
-import { Button } from '@/components/ui/button';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { Label } from '@/components/ui/label';
 import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
 import { mediaService } from '@/services/media.service';
-import { Upload, X, ImagePlus } from 'lucide-react';
+import { X, ImagePlus } from 'lucide-react';
 import { toast } from 'sonner';
 import type { MediaBucket } from '@/types/media';
+
 
 interface UploadedImage {
   id: string;
@@ -28,16 +28,22 @@ export function MultiImageUpload({
   maxImages = 10,
   label = 'Item Images',
 }: MultiImageUploadProps) {
-  const [images, setImages] = useState<UploadedImage[]>(
-    initialImages.map((img) => ({ id: img.id, url: img.url }))
-  );
+  const [images, setImages] = useState<UploadedImage[]>([]);
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (initialImages.length > 0) {
+      const mappedImages = initialImages.map((img) => ({ id: img.id, url: img.url }));
+      setImages(mappedImages);
+    }
+  }, [initialImages]);
 
   const updateParent = useCallback((newImages: UploadedImage[]) => {
     const mediaIds = newImages.filter(img => !img.isUploading).map(img => img.id);
     onImagesChange(mediaIds);
   }, [onImagesChange]);
+
 
   const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);
