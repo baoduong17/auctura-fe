@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -11,12 +12,15 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { DateTimePicker } from '@/components/ui/datetime-picker';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { MultiImageUpload } from '@/components/forms/MultiImageUpload';
 import { ArrowLeft, Plus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export function CreateItemPage() {
   const navigate = useNavigate();
   const { mutate: createItem, isPending } = useCreateItem();
+  const [mediaIds, setMediaIds] = useState<string[]>([]);
 
   const {
     register,
@@ -34,6 +38,7 @@ export function CreateItemPage() {
       startingPrice: data.startingPrice,
       startTime: data.startTime.toISOString(),
       endTime: data.endTime.toISOString(),
+      mediaIds: mediaIds.length > 0 ? mediaIds : undefined,
     };
 
     createItem(requestData, {
@@ -62,6 +67,16 @@ export function CreateItemPage() {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                {/* Image Upload Section */}
+                <MultiImageUpload
+                  bucket="items"
+                  onImagesChange={setMediaIds}
+                  maxImages={10}
+                  label="Item Images"
+                />
+
+                <Separator className="bg-gray-800" />
+
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-gray-200">
                     Item Name *

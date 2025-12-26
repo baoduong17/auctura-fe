@@ -76,7 +76,7 @@ export function AvatarUpload({
       setAvatarUrl(mediaRecord.fileUrl);
       setPreviewUrl(undefined);
       
-      toast.success('Avatar uploaded successfully');
+      toast.success('Avatar uploaded successfully. Click "Save Changes" to update your profile.');
       
       if (onUploadSuccess) {
         onUploadSuccess(mediaRecord.fileUrl, mediaRecord.id);

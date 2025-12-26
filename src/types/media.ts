@@ -22,4 +22,4 @@ export interface CreateMediaResponse {
     updatedAt: string;
 }
 
-export type MediaBucket = 'avatar' | 'item' | 'document';
+export type MediaBucket = 'avatar' | 'item' | 'items' | 'document';

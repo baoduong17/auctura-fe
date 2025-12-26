@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,6 +14,8 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { DateTimePicker } from '@/components/ui/datetime-picker';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { MultiImageUpload } from '@/components/forms/MultiImageUpload';
 import { ArrowLeft, Save } from 'lucide-react';
 import { parseDate } from '@/utils/formatters';
 
@@ -22,6 +24,8 @@ export function EditItemPage() {
   const navigate = useNavigate();
   const { data: item, isLoading, error } = useItem(id!);
   const { mutate: updateItem, isPending } = useUpdateItem();
+  const [mediaIds, setMediaIds] = useState<string[]>([]);
+  const [initialImages, setInitialImages] = useState<{ id: string; url: string }[]>([]);
 
   const {
     register,
@@ -43,6 +47,13 @@ export function EditItemPage() {
         startTime: parseDate(item.startTime),
         endTime: parseDate(item.endTime),
       });
+
+      // Set initial images from item media
+      if (item.medias && item.medias.length > 0) {
+        const images = item.medias.map((m) => ({ id: m.id, url: m.fileUrl }));
+        setInitialImages(images);
+        setMediaIds(images.map((img) => img.id));
+      }
     }
   }, [item, reset]);
 
@@ -55,6 +66,7 @@ export function EditItemPage() {
       startingPrice: data.startingPrice,
       startTime: data.startTime.toISOString(),
       endTime: data.endTime.toISOString(),
+      mediaIds: mediaIds,
     };
 
     updateItem(
@@ -107,6 +119,17 @@ export function EditItemPage() {
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                {/* Image Upload Section */}
+                <MultiImageUpload
+                  bucket="items"
+                  initialImages={initialImages}
+                  onImagesChange={setMediaIds}
+                  maxImages={10}
+                  label="Item Images"
+                />
+
+                <Separator className="bg-gray-800" />
+
                 <div className="space-y-2">
                   <Label htmlFor="name" className="text-gray-200">
                     Item Name *
@@ -230,4 +253,3 @@ export function EditItemPage() {
     </>
   );
 }
-

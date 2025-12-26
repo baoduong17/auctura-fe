@@ -8,12 +8,14 @@ import { usePlaceBid } from '@/hooks/useBids';
 import { useLockItem } from '@/hooks/useItems';
 import { BidHistoryTable } from '@/components/bids';
 import { ItemInfoSection } from '@/components/items/ItemInfoSection';
+import { ItemImageGallery } from '@/components/items/ItemImageGallery';
 import { BidFormSection } from '@/components/items/BidFormSection';
 import { WinnerSection } from '@/components/items/WinnerSection';
 import { ItemDetailSkeleton } from '@/components/ui/LoadingSpinner';
 import { ErrorPage } from '@/components/ui/ErrorState';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -102,14 +104,24 @@ export function ItemDetailPage() {
       <div className="container mx-auto py-8 px-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
+
             <ItemInfoSection item={item} currentPrice={currentPrice} minimumBid={minimumBid} />
+            
+            <Card className="bg-[#242424] border-gray-800">
+              <CardContent className="p-4">
+                <ItemImageGallery 
+                  images={item.medias || []} 
+                  itemName={item.name} 
+                />
+              </CardContent>
+            </Card>
 
             {item.winnerId && item.winnerName && item.finalPrice && (
               <WinnerSection winnerName={item.winnerName} finalPrice={currentPrice} />
             )}
 
             {item.bidHistory && item.bidHistory.length > 0 && (
-                <BidHistoryTable bidHistory={item.bidHistory} />
+              <BidHistoryTable bidHistory={item.bidHistory} />
             )}
           </div>
 

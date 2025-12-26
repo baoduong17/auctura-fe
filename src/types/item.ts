@@ -1,6 +1,12 @@
 // types/item.ts
 import type { BidHistoryItem } from './bid';
 
+export interface ItemMedia {
+    id: string;
+    fileName: string;
+    fileUrl: string;
+}
+
 export interface Item {
     id: string;
     name: string;
@@ -21,6 +27,7 @@ export interface Item {
     winnerName?: string;
     finalPrice?: string | number;
     bidHistory?: BidHistoryItem[];
+    medias?: ItemMedia[];
     createdAt?: string;
     updatedAt?: string;
     isLocked?: boolean;
@@ -46,6 +53,7 @@ export interface CreateItemForm {
     startingPrice: number;
     startTime: Date;
     endTime: Date;
+    mediaIds?: string[];
 }
 
 export interface UpdateItemForm {
@@ -54,6 +62,7 @@ export interface UpdateItemForm {
     startingPrice?: number;
     startTime?: Date;
     endTime?: Date;
+    mediaIds?: string[];
 }
 
 export interface ItemFilters {
@@ -71,6 +80,7 @@ export interface CreateItemRequestDto {
     startingPrice: number;
     startTime: string;
     endTime: string;
+    mediaIds?: string[];
 }
 
 export interface UpdateItemRequestDto {
@@ -79,6 +89,7 @@ export interface UpdateItemRequestDto {
     startingPrice?: number;
     startTime?: string;
     endTime?: string;
+    mediaIds?: string[];
 }
 
 export interface ItemResponseDto {

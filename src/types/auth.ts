@@ -5,6 +5,7 @@ export interface User {
     email: string;
     fullName?: string;
     picture?: string;
+    avatarId: string | null;
     gender?: 'MALE' | 'FEMALE';
     role: 'USER' | 'ADMIN';
     birthday?: string;
@@ -70,7 +71,7 @@ export interface ChangePasswordDto {
 export interface UpdateProfileDto {
     firstName?: string;
     lastName?: string;
-    avatarId?: string;
+    avatarId?: string | null;
     birthday?: string;
     gender?: Gender;
     phoneNumber?: string;
