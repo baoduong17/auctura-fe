@@ -1,16 +1,15 @@
 // components/items/ItemCard.tsx
-import { useNavigate } from 'react-router-dom';
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { PriceDisplay } from '@/components/ui/PriceDisplay';
-import { StatusBadge } from '@/components/ui/StatusBadge';
-import { CountdownTimer } from '@/components/ui/CountdownTimer';
-import { ItemInfoRow } from '@/components/items/ItemInfoRow';
-import type { Item } from '@/types/item';
-import { User } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { getDisplayName } from '@/utils/user';
-import { COLORS } from '@/constants/theme';
+import { useNavigate } from "react-router-dom";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { PriceDisplay } from "@/components/ui/PriceDisplay";
+import { StatusBadge } from "@/components/ui/StatusBadge";
+import { CountdownTimer } from "@/components/ui/CountdownTimer";
+import { ItemInfoRow } from "@/components/items/ItemInfoRow";
+import type { Item } from "@/types/item";
+import { User } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { getDisplayName } from "@/utils/user";
+import { COLORS } from "@/constants/theme";
 
 export interface ItemCardProps {
   item: Item;
@@ -19,7 +18,7 @@ export interface ItemCardProps {
 
 export function ItemCard({ item, className }: ItemCardProps) {
   const navigate = useNavigate();
-  
+
   const ownerDisplayName = getDisplayName(
     item.ownerName,
     item.ownerFirstName,
@@ -31,9 +30,12 @@ export function ItemCard({ item, className }: ItemCardProps) {
   };
 
   return (
-    <Card 
+    <Card
       onClick={handleCardClick}
-      className={cn('border-gray-800 transition-colors flex flex-col cursor-pointer', className)}
+      className={cn(
+        "border-gray-800 transition-colors flex flex-col cursor-pointer",
+        className
+      )}
       style={{ backgroundColor: COLORS.card }}
     >
       <CardHeader className="pb-3">
@@ -63,12 +65,26 @@ export function ItemCard({ item, className }: ItemCardProps) {
 
           <ItemInfoRow
             label="Starting Price"
-            value={<PriceDisplay amount={item.startingPrice} size="sm" showIcon={true} showCurrency={false} />}
+            value={
+              <PriceDisplay
+                amount={item.startingPrice}
+                size="sm"
+                showIcon={true}
+                showCurrency={false}
+              />
+            }
           />
 
           <ItemInfoRow
             label="Current Price"
-            value={<PriceDisplay amount={item.finalPrice} size="md" showIcon={true} showCurrency={false} />}
+            value={
+              <PriceDisplay
+                amount={item.finalPrice}
+                size="md"
+                showIcon={true}
+                showCurrency={false}
+              />
+            }
           />
 
           {(item.totalBids ?? 0) > 0 && (

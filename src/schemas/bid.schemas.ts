@@ -4,6 +4,6 @@ import { z } from 'zod';
 export const placeBidSchema = z.object({
     itemId: z.string().uuid('Invalid item ID'),
     price: z
-        .number({ required_error: 'Bid amount is required' })
+        .number({ message: 'Bid amount is required' })
         .positive('Bid amount must be positive'),
 });

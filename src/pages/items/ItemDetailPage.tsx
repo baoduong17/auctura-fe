@@ -1,21 +1,18 @@
 // pages/items/ItemDetailPage.tsx
-import { useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useItem } from '@/hooks/useItems';
-import { usePlaceBid } from '@/hooks/useBids';
-import { useLockItem } from '@/hooks/useItems';
-import { BidHistoryTable } from '@/components/bids';
-import { ItemInfoSection } from '@/components/items/ItemInfoSection';
-import { ItemImageGallery } from '@/components/items/ItemImageGallery';
-import { BidFormSection } from '@/components/items/BidFormSection';
-import { WinnerSection } from '@/components/items/WinnerSection';
-import { ItemDetailSkeleton } from '@/components/ui/LoadingSpinner';
-import { ErrorPage } from '@/components/ui/ErrorState';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
+import { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useItem } from "@/hooks/useItems";
+import { usePlaceBid } from "@/hooks/useBids";
+import { useLockItem } from "@/hooks/useItems";
+import { BidHistoryTable } from "@/components/bids";
+import { ItemInfoSection } from "@/components/items/ItemInfoSection";
+import { BidFormSection } from "@/components/items/BidFormSection";
+import { ItemDetailSkeleton } from "@/components/ui/LoadingSpinner";
+import { ErrorPage } from "@/components/ui/ErrorState";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,13 +22,13 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from '@/components/ui/alert-dialog';
-import { Lock } from 'lucide-react';
-import { placeBidSchema } from '@/schemas/bid.schemas';
-import type { PlaceBidForm } from '@/types/bid';
-import { canPlaceBid } from '@/utils/validators';
-import { useAuthStore } from '@/store/auth.store';
-import { toast } from 'sonner';
+} from "@/components/ui/alert-dialog";
+import { Lock } from "lucide-react";
+import { placeBidSchema } from "@/schemas/bid.schemas";
+import type { PlaceBidForm } from "@/types/bid";
+import { canPlaceBid } from "@/utils/validators";
+import { useAuthStore } from "@/store/auth.store";
+import { toast } from "sonner";
 
 export function ItemDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -59,7 +56,7 @@ export function ItemDetailPage() {
 
     const validation = canPlaceBid(item, user.id, data.price);
     if (!validation.canBid) {
-      toast.error(validation.reason || 'Cannot place bid');
+      toast.error(validation.reason || "Cannot place bid");
       return;
     }
 
@@ -82,20 +79,23 @@ export function ItemDetailPage() {
       <ErrorPage
         title="Item not found"
         message="The item you're looking for doesn't exist or has been removed."
-        onRetry={() => navigate('/marketplace')}
+        onRetry={() => navigate("/marketplace")}
       />
     );
   }
 
   const isOwner = user?.id === item.ownerId;
-  const startingPrice = typeof item.startingPrice === 'string' 
-    ? parseFloat(item.startingPrice) 
-    : item.startingPrice;
-  
-  const currentPrice = item.finalPrice 
-    ? (typeof item.finalPrice === 'string' ? parseFloat(item.finalPrice) : item.finalPrice)
+  const startingPrice =
+    typeof item.startingPrice === "string"
+      ? parseFloat(item.startingPrice)
+      : item.startingPrice;
+
+  const currentPrice = item.finalPrice
+    ? typeof item.finalPrice === "string"
+      ? parseFloat(item.finalPrice)
+      : item.finalPrice
     : startingPrice;
-  
+
   const minimumBid = currentPrice + 0.01;
   const isActive = !item.isLocked && new Date(item.endTime) > new Date();
 
@@ -103,7 +103,11 @@ export function ItemDetailPage() {
     <div className="min-h-screen bg-[#1a1a1a] text-white">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
-          <ItemInfoSection item={item} currentPrice={currentPrice} minimumBid={minimumBid} />
+          <ItemInfoSection
+            item={item}
+            currentPrice={currentPrice}
+            minimumBid={minimumBid}
+          />
         </div>
 
         <div className="space-y-6">
@@ -132,7 +136,7 @@ export function ItemDetailPage() {
                   onClick={() => setShowLockDialog(true)}
                   disabled={isLocking}
                 >
-                  {isLocking ? 'Locking...' : 'Lock Item'}
+                  {isLocking ? "Locking..." : "Lock Item"}
                 </Button>
               </CardContent>
             </Card>
@@ -149,12 +153,16 @@ export function ItemDetailPage() {
           <AlertDialogHeader>
             <AlertDialogTitle>Lock this item?</AlertDialogTitle>
             <AlertDialogDescription>
-              This will prevent further bidding on this item. This action cannot be undone.
+              This will prevent further bidding on this item. This action cannot
+              be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleLockItem} className="bg-red-600 hover:bg-red-700">
+            <AlertDialogAction
+              onClick={handleLockItem}
+              className="bg-red-600 hover:bg-red-700"
+            >
               Lock Item
             </AlertDialogAction>
           </AlertDialogFooter>
