@@ -1,4 +1,7 @@
 import { io, Socket } from "socket.io-client";
+import { toast } from "sonner";
+import { queryClient } from "@/lib/queryClient";
+import type { NotificationMessage } from "@/types/notification";
 
 interface UserAuthData {
     userId: string;
@@ -24,6 +27,8 @@ export class SocketConnection {
             auth: {
                 userId: authData.userId,
                 email: authData.email,
+                platform: 'web',
+                project: 'AUCTION'
             },
         });
 
@@ -33,6 +38,21 @@ export class SocketConnection {
 
         SocketConnection.socket.on("disconnect", (reason) => {
             console.log("Socket disconnected:", reason);
+        });
+
+        SocketConnection.socket.on("notification", (data: NotificationMessage) => {
+            queryClient.invalidateQueries({ queryKey: ['notifications'] });
+
+            toast.info(data.title, {
+                description: data.content,
+                duration: 5000,
+                className: data.actionUrl ? "cursor-pointer" : "",
+                onClick: () => {
+                    if (data.actionUrl) {
+                        window.location.href = data.actionUrl;
+                    }
+                },
+            } as any);
         });
 
         return SocketConnection.socket;

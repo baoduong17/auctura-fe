@@ -6,10 +6,12 @@ import type { AuthTokens } from '@/types/auth';
 // Service base URLs
 const AUCTION_SERVICE_URL = import.meta.env.VITE_AUCTION_SERVICE_URL || 'http://localhost:3000';
 const MEDIA_SERVICE_URL = import.meta.env.VITE_MEDIA_SERVICE_URL || 'http://localhost:4000';
+const NOTIFICATION_SERVICE_URL = import.meta.env.VITE_NOTIFICATION_SERVICE_URL || 'http://localhost:5000';
 
 // Service prefixes
 const AUCTION_SERVICE_PREFIX = '/auction-service/api/v1';
 const MEDIA_SERVICE_PREFIX = '/media-service/api/v1';
+const NOTIFICATION_SERVICE_PREFIX = '/notification-service/api/v1';
 
 let onTokensRefreshed: ((tokens: AuthTokens) => void) | null = null;
 
@@ -33,6 +35,14 @@ export const mediaApiClient = axios.create({
     },
 });
 
+// Notification Service API Client
+export const notificationApiClient = axios.create({
+    baseURL: `${NOTIFICATION_SERVICE_URL}${NOTIFICATION_SERVICE_PREFIX}`,
+    headers: {
+        'Content-Type': 'application/json',
+    },
+});
+
 // Helper function to add auth token to request
 const addAuthToken = (config: InternalAxiosRequestConfig) => {
     const tokens = getStoredTokens();
@@ -45,6 +55,7 @@ const addAuthToken = (config: InternalAxiosRequestConfig) => {
 // Add request interceptor for both clients
 apiClient.interceptors.request.use(addAuthToken, (error) => Promise.reject(error));
 mediaApiClient.interceptors.request.use(addAuthToken, (error) => Promise.reject(error));
+notificationApiClient.interceptors.request.use(addAuthToken, (error) => Promise.reject(error));
 
 let isRefreshing = false;
 let failedQueue: Array<{
@@ -130,6 +141,7 @@ const createResponseInterceptor = (client: AxiosInstance) => {
 // Add response interceptors for both clients
 createResponseInterceptor(apiClient);
 createResponseInterceptor(mediaApiClient);
+createResponseInterceptor(notificationApiClient);
 
 export function getStoredTokens(): AuthTokens | null {
     const stored = localStorage.getItem('auth_tokens');
