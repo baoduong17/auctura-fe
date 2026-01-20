@@ -51,6 +51,7 @@ export interface LoginFormDto {
 
 export interface GoogleTokenFormDto {
     idToken: string;
+    accessToken: string;
 }
 
 export interface AppleTokenFormDto {
