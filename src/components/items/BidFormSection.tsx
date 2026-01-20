@@ -1,11 +1,17 @@
-import type { UseFormRegister, FieldErrors } from 'react-hook-form';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Gavel } from 'lucide-react';
-import type { PlaceBidForm } from '@/types/bid';
+import type { UseFormRegister, FieldErrors } from "react-hook-form";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Gavel } from "lucide-react";
+import type { PlaceBidForm } from "@/types/bid";
 
 interface BidFormSectionProps {
   register: UseFormRegister<PlaceBidForm>;
@@ -28,11 +34,11 @@ export function BidFormSection({
 }: BidFormSectionProps) {
   if (!isActive) {
     return (
-          <Alert className="bg-gray-800 border-gray-700">
-            <AlertDescription>
-              This auction has ended. Bidding is no longer available.
-            </AlertDescription>
-          </Alert>
+      <Alert className="bg-gray-800 border-gray-700">
+        <AlertDescription>
+          This auction has ended. Bidding is no longer available.
+        </AlertDescription>
+      </Alert>
     );
   }
 
@@ -41,7 +47,7 @@ export function BidFormSection({
   }
 
   return (
-    <Card className="bg-[#242424] border-gray-800">
+    <Card className="bg-card border">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Gavel className="h-5 w-5" />
@@ -54,7 +60,7 @@ export function BidFormSection({
       <CardContent>
         <form onSubmit={onSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="price" className="text-gray-200">
+            <Label htmlFor="price" className="text-primary">
               Bid Amount (USD) *
             </Label>
             <Input
@@ -63,8 +69,8 @@ export function BidFormSection({
               step="0.01"
               min={minimumBid}
               placeholder={minimumBid.toFixed(2)}
-              {...register('price', { valueAsNumber: true })}
-              className="bg-[#1a1a1a] border-gray-700 text-white"
+              {...register("price", { valueAsNumber: true })}
+              className="bg-card border text-primary"
               disabled={isSubmitting}
             />
             {errors.price && (
@@ -74,10 +80,10 @@ export function BidFormSection({
 
           <Button
             type="submit"
-            className="w-full bg-[#256af4] hover:bg-[#1e5dd9]"
+            className="w-full bg-primary hover:bg-foreground"
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Placing Bid...' : 'Place Bid'}
+            {isSubmitting ? "Placing Bid..." : "Place Bid"}
           </Button>
         </form>
       </CardContent>

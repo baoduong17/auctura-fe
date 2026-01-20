@@ -227,11 +227,8 @@ export function AppSidebar() {
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
-                <SidebarMenuItem>
-                  <SidebarMenuButton
-                    onClick={() => setShowLogoutDialog(true)}
-                    className="text-red-400 hover:text-red-300"
-                  >
+                <SidebarMenuItem className="text-red-600 hover:text-red-700 hover:bg-red-50">
+                  <SidebarMenuButton onClick={() => setShowLogoutDialog(true)}>
                     <LogOut />
                     <span>Logout</span>
                   </SidebarMenuButton>

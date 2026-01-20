@@ -11,7 +11,7 @@ import { AuthLayout } from "@/components/auth/AuthLayout";
 import { FormField } from "@/components/forms/FormField";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { Button } from "@/components/ui/button";
-import { COLORS } from "@/constants/theme";
+
 import { toast } from "sonner";
 
 const GOOGLE_CLIENT_ID =
@@ -136,15 +136,13 @@ export function LoginPage() {
             <span className="w-full border-t border-gray-700" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground text-gray-400">
-              Or continue with
-            </span>
+            <span className="px-2">Or continue with</span>
           </div>
         </div>
 
         <Button
           type="button"
-          className="w-full text-white bg-[#1a56db] hover:bg-[#1a56db]/90"
+          className="w-full text-primary-foreground bg-primary hover:bg-primary/90"
           onClick={handleGoogleLogin}
           disabled={isLoading}
         >

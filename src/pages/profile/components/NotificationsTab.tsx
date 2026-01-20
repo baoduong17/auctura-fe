@@ -1,21 +1,26 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { NotificationSettings } from '@/components/forms/NotificationSettings';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
+import { NotificationSettings } from "@/components/forms/NotificationSettings";
 
 export function NotificationsTab() {
   return (
-    <Card className="bg-[#242424] border-gray-800">
+    <Card className="bg-background border">
       <CardHeader>
         <CardTitle>Notification Preferences</CardTitle>
-        <CardDescription>
-          Manage how you receive notifications
-        </CardDescription>
+        <CardDescription>Manage how you receive notifications</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <NotificationSettings />
-        <Separator className="bg-gray-800" />
-        <p className="text-xs text-gray-400">
-          Note: Notification settings are currently in development and will be available soon.
+        <Separator className="bg-background" />
+        <p className="text-xs text-muted-foreground">
+          Note: Notification settings are currently in development and will be
+          available soon.
         </p>
       </CardContent>
     </Card>

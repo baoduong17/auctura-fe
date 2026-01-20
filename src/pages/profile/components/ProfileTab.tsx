@@ -1,26 +1,32 @@
-import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { useAuthStore } from '@/store/auth.store';
-import { authService } from '@/services/auth.service';
-import { handleApiError } from '@/utils/error-handler';
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
-import { ProfileFormFields } from '@/components/forms/ProfileFormFields';
-import { AvatarUpload } from '@/components/forms/AvatarUpload';
-import { Save } from 'lucide-react';
-import { toast } from 'sonner';
+import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useAuthStore } from "@/store/auth.store";
+import { authService } from "@/services/auth.service";
+import { handleApiError } from "@/utils/error-handler";
+import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { ProfileFormFields } from "@/components/forms/ProfileFormFields";
+import { AvatarUpload } from "@/components/forms/AvatarUpload";
+import { Save } from "lucide-react";
+import { toast } from "sonner";
 
 const profileSchema = z.object({
-  firstName: z.string().min(1, 'First name is required'),
-  lastName: z.string().min(1, 'Last name is required'),
-  email: z.string().email('Invalid email address'),
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  email: z.string().email("Invalid email address"),
   phoneNumber: z.string().optional(),
   birthday: z.date().optional(),
-  gender: z.enum(['MALE', 'FEMALE']).optional(),
+  gender: z.enum(["MALE", "FEMALE"]).optional(),
 });
 
 type ProfileFormData = z.infer<typeof profileSchema>;
@@ -29,7 +35,9 @@ export function ProfileTab() {
   const { user } = useAuthStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | undefined>(user?.picture);
-  const [avatarId, setAvatarId] = useState<string | null>(user?.avatarId || null);
+  const [avatarId, setAvatarId] = useState<string | null>(
+    user?.avatarId || null,
+  );
 
   const {
     register,
@@ -40,10 +48,10 @@ export function ProfileTab() {
   } = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      firstName: user?.firstName || '',
-      lastName: user?.lastName || '',
-      email: user?.email || '',
-      phoneNumber: user?.phoneNumber || '',
+      firstName: user?.firstName || "",
+      lastName: user?.lastName || "",
+      email: user?.email || "",
+      phoneNumber: user?.phoneNumber || "",
       birthday: user?.birthday ? new Date(user.birthday) : undefined,
       gender: user?.gender || undefined,
     },
@@ -62,22 +70,22 @@ export function ProfileTab() {
         firstName: data.firstName,
         lastName: data.lastName,
         phoneNumber: data.phoneNumber,
-        birthday: data.birthday?.toISOString().split('T')[0],
+        birthday: data.birthday?.toISOString().split("T")[0],
         gender: data.gender,
         avatarId: avatarId,
       };
 
       await authService.updateProfile(updateData);
       const updatedUser = await authService.getCurrentUser();
-      
+
       useAuthStore.getState().updateUser(updatedUser);
-      
+
       if (updatedUser.picture) {
         setAvatarUrl(updatedUser.picture);
       }
-      
-      toast.success('Profile updated successfully');
-      
+
+      toast.success("Profile updated successfully");
+
       setAvatarId(null);
     } catch (error) {
       handleApiError(error);
@@ -96,7 +104,7 @@ export function ProfileTab() {
   }
 
   return (
-    <Card className="bg-[#242424] border-gray-800">
+    <Card className="bg-background border">
       <CardHeader>
         <CardTitle>Profile Information</CardTitle>
         <CardDescription>
@@ -108,9 +116,9 @@ export function ProfileTab() {
           <AvatarUpload
             currentAvatarUrl={avatarUrl}
             onUploadSuccess={handleAvatarUploadSuccess}
-            userInitials={`${user.firstName?.[0] || ''}${user.lastName?.[0] || ''}`}
+            userInitials={`${user.firstName?.[0] || ""}${user.lastName?.[0] || ""}`}
           />
-          <Separator className="bg-gray-800" />
+          <Separator className="bg-background" />
           <ProfileFormFields
             register={register}
             errors={errors}
@@ -118,11 +126,11 @@ export function ProfileTab() {
             setValue={setValue}
             userGender={user.gender}
           />
-          <Separator className="bg-gray-800" />
+          <Separator className="bg-background" />
           <div className="flex justify-end">
-            <Button 
-              type="submit" 
-              className="bg-[#256af4] hover:bg-[#1e5dd9]"
+            <Button
+              type="submit"
+              className="bg-background hover:bg-foreground text-primary hover:text-primary-foreground border"
               disabled={isSubmitting}
             >
               {isSubmitting ? (

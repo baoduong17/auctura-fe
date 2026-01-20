@@ -1,4 +1,3 @@
-// components/items/ItemCard.tsx
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { PriceDisplay } from "@/components/ui/PriceDisplay";
@@ -9,7 +8,6 @@ import type { Item } from "@/types/item";
 import { User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { getDisplayName } from "@/utils/user";
-import { COLORS } from "@/constants/theme";
 
 export interface ItemCardProps {
   item: Item;
@@ -22,7 +20,7 @@ export function ItemCard({ item, className }: ItemCardProps) {
   const ownerDisplayName = getDisplayName(
     item.ownerName,
     item.ownerFirstName,
-    item.ownerLastName
+    item.ownerLastName,
   );
 
   const handleCardClick = () => {
@@ -33,14 +31,13 @@ export function ItemCard({ item, className }: ItemCardProps) {
     <Card
       onClick={handleCardClick}
       className={cn(
-        "border-gray-800 transition-colors flex flex-col cursor-pointer",
-        className
+        "border bg-card transition-colors flex flex-col cursor-pointer",
+        className,
       )}
-      style={{ backgroundColor: COLORS.card }}
     >
       <CardHeader className="pb-3">
-        <div className="flex items-start justify-between gap-2">
-          <h3 className="font-semibold text-lg text-white line-clamp-2">
+        <div className="flex items-center justify-between gap-2">
+          <h3 className="font-semibold text-lg text-card-foreground line-clamp-2">
             {item.name}
           </h3>
           <StatusBadge
@@ -52,15 +49,15 @@ export function ItemCard({ item, className }: ItemCardProps) {
       </CardHeader>
 
       <CardContent className="pb-3 flex-1">
-        <p className="text-gray-400 text-sm line-clamp-2 mb-4">
+        <p className="text-muted-foreground text-sm line-clamp-2 mb-4">
           {item.description}
         </p>
 
-        <div className="space-y-2">
+        <div className="space-y-2 text-primary">
           <ItemInfoRow
             label="Owner"
             value={ownerDisplayName}
-            icon={<User className="h-4 w-4 text-gray-400" />}
+            icon={<User className="h-4 w-4 text-primary" />}
           />
 
           <ItemInfoRow

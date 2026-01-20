@@ -1,13 +1,13 @@
-import { Link } from 'react-router-dom';
-import { useAuthStore } from '@/store/auth.store';
-import { useMyItems, useLockItem } from '@/hooks/useItems';
-import { PriceDisplay } from '@/components/ui/PriceDisplay';
-import { StatusBadge } from '@/components/ui/StatusBadge';
-import { TableSkeleton } from '@/components/ui/LoadingSpinner';
-import { ErrorState } from '@/components/ui/ErrorState';
-import { EmptyState } from '@/components/ui/EmptyState';
-import { SmallStatCard } from '@/components/stats/SmallStatCard';
-import { Button } from '@/components/ui/button';
+import { Link } from "react-router-dom";
+import { useAuthStore } from "@/store/auth.store";
+import { useMyItems, useLockItem } from "@/hooks/useItems";
+import { PriceDisplay } from "@/components/ui/PriceDisplay";
+import { StatusBadge } from "@/components/ui/StatusBadge";
+import { TableSkeleton } from "@/components/ui/LoadingSpinner";
+import { ErrorState } from "@/components/ui/ErrorState";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { SmallStatCard } from "@/components/stats/SmallStatCard";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
@@ -15,15 +15,25 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
+} from "@/components/ui/table";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Eye, Edit, Lock, MoreVertical, Plus, Package, Activity, Gavel, Target } from 'lucide-react';
-import { formatDateTime, parseDate } from '@/utils/formatters';
+} from "@/components/ui/dropdown-menu";
+import {
+  Eye,
+  Edit,
+  Lock,
+  MoreVertical,
+  Plus,
+  Package,
+  Activity,
+  Gavel,
+  Target,
+} from "lucide-react";
+import { formatDateTime, parseDate } from "@/utils/formatters";
 
 export function MyItemsPage() {
   const { user } = useAuthStore();
@@ -56,7 +66,7 @@ export function MyItemsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-end">
         <Link to="/items/create">
-          <Button className="bg-[#256af4] hover:bg-[#1e5dd9]">
+          <Button className="bg-card text-primary hover:bg-card-foreground hover:text-primary-foreground border">
             <Plus className="h-4 w-4 mr-2" />
             Create Item
           </Button>
@@ -69,16 +79,18 @@ export function MyItemsPage() {
             title="Total Items"
             value={data.length}
             icon={Package}
-            iconClassName="h-8 w-8 text-blue-500"
+            iconClassName="h-8 w-8 text-primary"
           />
           <SmallStatCard
             title="Active Auctions"
-            value={data.filter((item) => {
-              const now = new Date();
-              const startTime = parseDate(item.startTime);
-              const endTime = parseDate(item.endTime);
-              return startTime <= now && endTime > now;
-            }).length}
+            value={
+              data.filter((item) => {
+                const now = new Date();
+                const startTime = parseDate(item.startTime);
+                const endTime = parseDate(item.endTime);
+                return startTime <= now && endTime > now;
+              }).length
+            }
             icon={Activity}
             iconClassName="h-8 w-8 text-green-500"
           />
@@ -98,17 +110,31 @@ export function MyItemsPage() {
       )}
 
       {data && data.length > 0 ? (
-        <div className="bg-[#242424] rounded-lg border border-gray-800">
+        <div className="bg-background rounded-lg border">
           <Table>
             <TableHeader className="bg-[#1e2330]">
-              <TableRow className="border-gray-800 hover:bg-transparent">
-                <TableHead className="text-gray-400 font-medium">Item Name</TableHead>
-                <TableHead className="text-gray-400 font-medium">Current Price</TableHead>
-                <TableHead className="text-gray-400 font-medium">Bids</TableHead>
-                <TableHead className="text-gray-400 font-medium">Status</TableHead>
-                <TableHead className="text-gray-400 font-medium">Start Time</TableHead>
-                <TableHead className="text-gray-400 font-medium">End Time</TableHead>
-                <TableHead className="text-gray-400 font-medium text-right">Actions</TableHead>
+              <TableRow className="hover:bg-transparent">
+                <TableHead className="text-primary-foreground bg-foreground">
+                  Item Name
+                </TableHead>
+                <TableHead className="text-primary-foreground bg-foreground">
+                  Current Price
+                </TableHead>
+                <TableHead className="text-primary-foreground bg-foreground">
+                  Bids
+                </TableHead>
+                <TableHead className="text-primary-foreground bg-foreground">
+                  Status
+                </TableHead>
+                <TableHead className="text-primary-foreground bg-foreground">
+                  Start Time
+                </TableHead>
+                <TableHead className="text-primary-foreground bg-foreground">
+                  End Time
+                </TableHead>
+                <TableHead className="text-primary-foreground bg-foreground text-right">
+                  Actions
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -116,33 +142,51 @@ export function MyItemsPage() {
                 const canEdit = item.bidsCount === 0;
 
                 return (
-                  <TableRow key={item.id} className="border-gray-800 hover:bg-gray-800/50">
-                    <TableCell className="font-medium text-white">{item.name}</TableCell>
-                    <TableCell>
-                      <PriceDisplay amount={item.currentPrice} showIcon={true} showCurrency={false} />
+                  <TableRow key={item.id} className="hover:bg-gray-800/50">
+                    <TableCell className="font-medium text-primary">
+                      {item.name}
                     </TableCell>
-                    <TableCell className="text-gray-300">{item.bidsCount}</TableCell>
                     <TableCell>
-                      <StatusBadge 
+                      <PriceDisplay
+                        amount={item.currentPrice}
+                        showIcon={true}
+                        showCurrency={false}
+                      />
+                    </TableCell>
+                    <TableCell className="text-muted-foreground">
+                      {item.bidsCount}
+                    </TableCell>
+                    <TableCell>
+                      <StatusBadge
                         startTime={item.startTime}
                         endTime={item.endTime}
                       />
                     </TableCell>
-                    <TableCell className="text-sm text-gray-400">
+                    <TableCell className="text-sm text-muted-foreground">
                       {formatDateTime(item.startTime)}
                     </TableCell>
-                    <TableCell className="text-sm text-gray-400">
+                    <TableCell className="text-sm text-muted-foreground">
                       {formatDateTime(item.endTime)}
                     </TableCell>
                     <TableCell className="text-right">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="sm" className="hover:bg-gray-700">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="hover:bg-primary"
+                          >
                             <MoreVertical className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="bg-[#2a2a2a] border-gray-700">
-                          <DropdownMenuItem asChild className="cursor-pointer hover:bg-gray-700">
+                        <DropdownMenuContent
+                          align="end"
+                          className="bg-[#2a2a2a] border-gray-700"
+                        >
+                          <DropdownMenuItem
+                            asChild
+                            className="cursor-pointer hover:bg-primary"
+                          >
                             <Link to={`/items/${item.id}`}>
                               <Eye className="h-4 w-4 mr-2" />
                               View Details
@@ -150,7 +194,10 @@ export function MyItemsPage() {
                           </DropdownMenuItem>
                           {canEdit && (
                             <>
-                              <DropdownMenuItem asChild className="cursor-pointer hover:bg-gray-700">
+                              <DropdownMenuItem
+                                asChild
+                                className="cursor-pointer hover:bg-primary"
+                              >
                                 <Link to={`/items/${item.id}/edit`}>
                                   <Edit className="h-4 w-4 mr-2" />
                                   Edit
@@ -159,7 +206,7 @@ export function MyItemsPage() {
                               <DropdownMenuItem
                                 onClick={() => handleLockItem(item.id)}
                                 disabled={isLocking}
-                                className="cursor-pointer text-red-400 hover:bg-gray-700 hover:text-red-300"
+                                className="cursor-pointer text-red-400 hover:bg-primary hover:text-red-300"
                               >
                                 <Lock className="h-4 w-4 mr-2" />
                                 Lock Item

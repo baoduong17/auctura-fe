@@ -1,5 +1,11 @@
-import { useState } from 'react';
-import { DollarSign, TrendingUp, Package, ShoppingCart, Award } from 'lucide-react';
+import { useState } from "react";
+import {
+  DollarSign,
+  TrendingUp,
+  Package,
+  ShoppingCart,
+  Award,
+} from "lucide-react";
 import {
   StatCard,
   DateRangeFilter,
@@ -9,9 +15,9 @@ import {
   SellingAreaChart,
   BuyingAreaChart,
   BiddingEfficiencyChart,
-} from '@/components/stats';
-import { useStatistics } from '@/hooks/useStatistics';
-import type { MonthlyStatistics } from '@/types/statistics';
+} from "@/components/stats";
+import { useStatistics } from "@/hooks/useStatistics";
+import type { MonthlyStatistics } from "@/types/statistics";
 
 function transformMonthlyData(data: MonthlyStatistics[] = []) {
   if (!data || data.length === 0) {
@@ -23,18 +29,18 @@ function transformMonthlyData(data: MonthlyStatistics[] = []) {
   }
 
   return {
-    sellingData: data.map(d => ({
-      month: d.month.substring(5), 
+    sellingData: data.map((d) => ({
+      month: d.month.substring(5),
       revenue: d.revenue,
       itemsSold: d.itemSold,
     })),
-    buyingData: data.map(d => ({
+    buyingData: data.map((d) => ({
       month: d.month.substring(5),
       spending: d.spending,
       itemsWon: d.itemsWon,
       bidsPlaced: d.bidsPlaced,
     })),
-    trendData: data.map(d => ({
+    trendData: data.map((d) => ({
       month: d.month.substring(5),
       selling: d.revenue,
       buying: d.spending,
@@ -47,12 +53,17 @@ export function StatisticPage() {
   const [startDate, setStartDate] = useState<Date | undefined>(undefined);
   const [endDate, setEndDate] = useState<Date | undefined>(undefined);
 
-  const { data: statistics, isLoading, error, refetch } = useStatistics(
+  const {
+    data: statistics,
+    isLoading,
+    error,
+    refetch,
+  } = useStatistics(
     {
-      startDate: startDate?.toISOString().split('T')[0] || '',
-      endDate: endDate?.toISOString().split('T')[0] || '',
+      startDate: startDate?.toISOString().split("T")[0] || "",
+      endDate: endDate?.toISOString().split("T")[0] || "",
     },
-    !!startDate && !!endDate
+    !!startDate && !!endDate,
   );
 
   const handleApplyFilter = () => {
@@ -85,7 +96,7 @@ export function StatisticPage() {
           onApplyFilter={handleApplyFilter}
           onClearFilter={handleClearFilter}
         />
-        <div className="text-center text-gray-400 py-12">
+        <div className="text-center text-primary py-12">
           Select a date range to view statistics
         </div>
       </div>
@@ -93,7 +104,7 @@ export function StatisticPage() {
   }
 
   const { sellingData, buyingData, trendData } = transformMonthlyData(
-    statistics?.monthlySalesReports || []
+    statistics?.monthlySalesReports || [],
   );
 
   return (

@@ -100,7 +100,7 @@ export function ItemDetailPage() {
   const isActive = !item.isLocked && new Date(item.endTime) > new Date();
 
   return (
-    <div className="min-h-screen bg-[#1a1a1a] text-white">
+    <div className="min-h-screen bg-background text-primary">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-6">
           <ItemInfoSection
@@ -122,7 +122,7 @@ export function ItemDetailPage() {
           />
 
           {isOwner && isActive && (
-            <Card className="bg-[#242424] border-gray-800">
+            <Card className="bg-card border">
               <CardHeader>
                 <CardTitle className="text-lg flex items-center gap-2">
                   <Lock className="h-5 w-5" />
@@ -132,7 +132,7 @@ export function ItemDetailPage() {
               <CardContent>
                 <Button
                   variant="destructive"
-                  className="w-full"
+                  className="w-full hover:bg-red-500"
                   onClick={() => setShowLockDialog(true)}
                   disabled={isLocking}
                 >
@@ -149,7 +149,7 @@ export function ItemDetailPage() {
       </div>
 
       <AlertDialog open={showLockDialog} onOpenChange={setShowLockDialog}>
-        <AlertDialogContent className="bg-[#242424] border-gray-800">
+        <AlertDialogContent className="bg-card border">
           <AlertDialogHeader>
             <AlertDialogTitle>Lock this item?</AlertDialogTitle>
             <AlertDialogDescription>

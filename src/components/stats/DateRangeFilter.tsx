@@ -1,7 +1,13 @@
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { DatePicker } from '@/components/ui/date-picker';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { DatePicker } from "@/components/ui/date-picker";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 
 interface DateRangeFilterProps {
   startDate: Date | undefined;
@@ -21,15 +27,17 @@ export function DateRangeFilter({
   onClearFilter,
 }: DateRangeFilterProps) {
   return (
-    <Card className="bg-[#242424] border-gray-800">
+    <Card className="bg-card border">
       <CardHeader>
         <CardTitle className="text-lg">Filter by Date Range</CardTitle>
-        <CardDescription>Select a date range to view statistics</CardDescription>
+        <CardDescription>
+          Select a date range to view statistics
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
           <div className="space-y-2">
-            <Label htmlFor="startDate" className="text-gray-200">
+            <Label htmlFor="startDate" className="text-primary">
               Start Date
             </Label>
             <DatePicker
@@ -39,7 +47,7 @@ export function DateRangeFilter({
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="endDate" className="text-gray-200">
+            <Label htmlFor="endDate" className="text-primary">
               End Date
             </Label>
             <DatePicker
@@ -52,7 +60,7 @@ export function DateRangeFilter({
           <div className="flex gap-2">
             <Button
               onClick={onApplyFilter}
-              className="bg-[#256af4] hover:bg-[#1e5dd9]"
+              className="bg-primary hover:bg-primary/80"
             >
               Apply Filter
             </Button>

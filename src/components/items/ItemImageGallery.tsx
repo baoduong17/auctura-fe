@@ -1,18 +1,18 @@
-import { useState } from 'react';
-import { ChevronLeft, ChevronRight, Play } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import type { ItemMedia } from '@/types/item';
+import { useState } from "react";
+import { ChevronLeft, ChevronRight, Play } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import type { ItemMedia } from "@/types/item";
 
 interface ItemImageGalleryProps {
   images: ItemMedia[];
   itemName: string;
 }
 
-const VIDEO_EXTENSIONS = ['.mp4', '.webm', '.ogg', '.mov', '.avi', '.mkv'];
+const VIDEO_EXTENSIONS = [".mp4", ".webm", ".ogg", ".mov", ".avi", ".mkv"];
 
 function isVideoFile(fileName: string): boolean {
   const lowerFileName = fileName.toLowerCase();
-  return VIDEO_EXTENSIONS.some(ext => lowerFileName.endsWith(ext));
+  return VIDEO_EXTENSIONS.some((ext) => lowerFileName.endsWith(ext));
 }
 
 export function ItemImageGallery({ images, itemName }: ItemImageGalleryProps) {
@@ -20,7 +20,7 @@ export function ItemImageGallery({ images, itemName }: ItemImageGalleryProps) {
 
   if (!images || images.length === 0) {
     return (
-      <div className="aspect-video bg-[#242424] rounded-lg flex items-center justify-center border border-gray-800">
+      <div className="aspect-video bg-background rounded-lg flex items-center justify-center border border-gray-800">
         <div className="text-center text-gray-500">
           <svg
             className="mx-auto h-16 w-16 mb-2"
@@ -115,8 +115,8 @@ export function ItemImageGallery({ images, itemName }: ItemImageGalleryProps) {
                 onClick={() => goToIndex(index)}
                 className={`relative flex-shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 transition-all ${
                   index === currentIndex
-                    ? 'border-[#256af4] ring-1 ring-[#256af4]'
-                    : 'border-gray-700 hover:border-gray-500'
+                    ? "border-[#256af4] ring-1 ring-[#256af4]"
+                    : "border-gray-700 hover:border-gray-500"
                 }`}
               >
                 {isVideo ? (
@@ -145,4 +145,3 @@ export function ItemImageGallery({ images, itemName }: ItemImageGalleryProps) {
     </div>
   );
 }
-

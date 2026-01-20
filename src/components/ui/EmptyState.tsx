@@ -1,8 +1,8 @@
 // components/ui/EmptyState.tsx
-import { Button } from '@/components/ui/button';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import type { LucideIcon } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import type { LucideIcon } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface EmptyStateProps {
   icon?: LucideIcon;
@@ -23,7 +23,7 @@ export function EmptyState({
 }: EmptyStateProps) {
   return (
     <div className="flex flex-col items-center justify-center py-20">
-      <Alert className="max-w-2xl bg-[#242424] border-gray-800 text-center">
+      <Alert className="max-w-2xl bg-white border-gray-800 text-center">
         {Icon && (
           <div className="flex justify-center mb-3">
             <Icon className="h-12 w-12 text-gray-600" />
@@ -31,20 +31,23 @@ export function EmptyState({
         )}
         <AlertTitle className="text-lg mb-2 col-span-2">{title}</AlertTitle>
         {description && (
-          <AlertDescription className="mb-4 col-span-2">
+          <AlertDescription className="mb-4 col-span-2 text-center">
             {description}
           </AlertDescription>
         )}
-        {(actionLabel && (actionLink || onAction)) && (
+        {actionLabel && (actionLink || onAction) && (
           <div className="flex justify-center mt-4 col-span-2">
             {actionLink ? (
               <Link to={actionLink}>
-                <Button className="bg-[#256af4] hover:bg-[#1e5dd9]">
+                <Button className="bg-card hover:bg-card-foreground border text-primary hover:text-primary-foreground">
                   {actionLabel}
                 </Button>
               </Link>
             ) : (
-              <Button onClick={onAction} className="bg-[#256af4] hover:bg-[#1e5dd9]">
+              <Button
+                onClick={onAction}
+                className="bg-card hover:bg-card-foreground border text-primary hover:text-primary-foreground"
+              >
                 {actionLabel}
               </Button>
             )}

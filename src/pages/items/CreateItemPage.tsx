@@ -18,7 +18,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { MultiImageUpload } from "@/components/forms/MultiImageUpload";
 import { ArrowLeft, Plus } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -64,7 +63,7 @@ export function CreateItemPage() {
       </Link>
 
       <div className="max-w-2xl mx-auto">
-        <Card className="bg-[#242424] border-gray-800">
+        <Card className="bg-background text-primary border">
           <CardHeader>
             <CardTitle className="text-2xl">Create New Auction Item</CardTitle>
             <CardDescription>
@@ -73,7 +72,6 @@ export function CreateItemPage() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              {/* Image Upload Section */}
               <MultiImageUpload
                 bucket="items"
                 onImagesChange={setMediaIds}
@@ -81,17 +79,15 @@ export function CreateItemPage() {
                 label="Item Images"
               />
 
-              <Separator className="bg-gray-800" />
-
               <div className="space-y-2">
-                <Label htmlFor="name" className="text-gray-200">
+                <Label htmlFor="name" className="text-primary">
                   Item Name *
                 </Label>
                 <Input
                   id="name"
                   placeholder="Enter item name"
                   {...register("name")}
-                  className="bg-[#1a1a1a] border-gray-700 text-white"
+                  className="bg-card text-primary border"
                 />
                 {errors.name && (
                   <p className="text-red-500 text-sm">{errors.name.message}</p>
@@ -99,7 +95,7 @@ export function CreateItemPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="description" className="text-gray-200">
+                <Label htmlFor="description" className="text-primary">
                   Description *
                 </Label>
                 <Textarea
@@ -107,7 +103,7 @@ export function CreateItemPage() {
                   placeholder="Describe your item in detail"
                   rows={4}
                   {...register("description")}
-                  className="bg-[#1a1a1a] border-gray-700 text-white resize-none"
+                  className="bg-card text-primary border resize-none"
                 />
                 {errors.description && (
                   <p className="text-red-500 text-sm">
@@ -117,7 +113,7 @@ export function CreateItemPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="startingPrice" className="text-gray-200">
+                <Label htmlFor="startingPrice" className="text-primary">
                   Starting Price (USD) *
                 </Label>
                 <Input
@@ -127,7 +123,7 @@ export function CreateItemPage() {
                   min="0"
                   placeholder="0.00"
                   {...register("startingPrice", { valueAsNumber: true })}
-                  className="bg-[#1a1a1a] border-gray-700 text-white"
+                  className="bg-card text-primary border"
                 />
                 {errors.startingPrice && (
                   <p className="text-red-500 text-sm">
@@ -137,7 +133,7 @@ export function CreateItemPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="startTime" className="text-gray-200">
+                <Label htmlFor="startTime" className="text-primary">
                   Auction Start Time *
                 </Label>
                 <Controller
@@ -149,6 +145,7 @@ export function CreateItemPage() {
                       onChange={field.onChange}
                       placeholder="Select start date and time"
                       minDate={new Date()}
+                      className="bg-card text-primary border hover:bg-card-foreground hover:text-primary-foreground"
                     />
                   )}
                 />
@@ -163,7 +160,7 @@ export function CreateItemPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="endTime" className="text-gray-200">
+                <Label htmlFor="endTime" className="text-primary">
                   Auction End Time *
                 </Label>
                 <Controller
@@ -175,6 +172,7 @@ export function CreateItemPage() {
                       onChange={field.onChange}
                       placeholder="Select end date and time"
                       minDate={new Date()}
+                      className="bg-card text-primary border hover:bg-card-foreground hover:text-primary-foreground"
                     />
                   )}
                 />
@@ -191,7 +189,7 @@ export function CreateItemPage() {
               <div className="flex gap-4 pt-4">
                 <Button
                   type="submit"
-                  className="flex-1 bg-[#256af4] hover:bg-[#1e5dd9]"
+                  className="flex-1 bg-primary hover:bg-primary/80"
                   disabled={isPending}
                 >
                   {isPending ? (

@@ -1,15 +1,15 @@
-import { Link } from 'react-router-dom';
-import { useMyBids } from '@/hooks/useBids';
-import type { MyBidItem } from '@/types/bid';
-import { PriceDisplay } from '@/components/ui/PriceDisplay';
-import { CountdownTimer } from '@/components/ui/CountdownTimer';
-import { TableSkeleton } from '@/components/ui/LoadingSpinner';
-import { ErrorState } from '@/components/ui/ErrorState';
-import { EmptyState } from '@/components/ui/EmptyState';
-import { SmallStatCard } from '@/components/stats/SmallStatCard';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Link } from "react-router-dom";
+import { useMyBids } from "@/hooks/useBids";
+import type { MyBidItem } from "@/types/bid";
+import { PriceDisplay } from "@/components/ui/PriceDisplay";
+import { CountdownTimer } from "@/components/ui/CountdownTimer";
+import { TableSkeleton } from "@/components/ui/LoadingSpinner";
+import { ErrorState } from "@/components/ui/ErrorState";
+import { EmptyState } from "@/components/ui/EmptyState";
+import { SmallStatCard } from "@/components/stats/SmallStatCard";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Table,
   TableBody,
@@ -17,9 +17,9 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { Eye, Trophy, Gavel, DollarSign } from 'lucide-react';
-import { formatDateTime, parseDate } from '@/utils/formatters';
+} from "@/components/ui/table";
+import { Eye, Trophy, Gavel, DollarSign } from "lucide-react";
+import { formatDateTime, parseDate } from "@/utils/formatters";
 
 export function MyBidsPage() {
   const { data, isLoading, error, refetch } = useMyBids();
@@ -29,7 +29,10 @@ export function MyBidsPage() {
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="bg-[#242424] p-6 rounded-lg border border-gray-800 space-y-3">
+            <div
+              key={i}
+              className="bg-background p-6 rounded-lg border border-gray-800 space-y-3"
+            >
               <Skeleton className="h-5 w-32 bg-gray-700" />
               <Skeleton className="h-10 w-20 bg-gray-700" />
             </div>
@@ -54,7 +57,12 @@ export function MyBidsPage() {
     return null;
   }
 
-  const { activeBidsCount, activeWinningBidsCount, activeWinningBidsSum, bids } = data;
+  const {
+    activeBidsCount,
+    activeWinningBidsCount,
+    activeWinningBidsSum,
+    bids,
+  } = data;
 
   return (
     <div className="space-y-6">
@@ -76,7 +84,14 @@ export function MyBidsPage() {
 
         <SmallStatCard
           title="Total Bid Amount"
-          value={<PriceDisplay amount={activeWinningBidsSum} size="lg" showIcon={false} showCurrency={false} />}
+          value={
+            <PriceDisplay
+              amount={activeWinningBidsSum}
+              size="lg"
+              showIcon={false}
+              showCurrency={false}
+            />
+          }
           icon={DollarSign}
           iconClassName="h-8 w-8 text-green-500"
         />
@@ -92,18 +107,26 @@ export function MyBidsPage() {
                 <TableHead className="text-gray-400">Auction Ends</TableHead>
                 <TableHead className="text-gray-400">Time Left</TableHead>
                 <TableHead className="text-gray-400">Bid Time</TableHead>
-                <TableHead className="text-gray-400 text-right">Actions</TableHead>
+                <TableHead className="text-gray-400 text-right">
+                  Actions
+                </TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {bids.map((bid: MyBidItem) => {
                 const isEnded = parseDate(bid.itemEndTime) < new Date();
-                const bidPrice = typeof bid.price === 'string' ? parseFloat(bid.price) : bid.price;
+                const bidPrice =
+                  typeof bid.price === "string"
+                    ? parseFloat(bid.price)
+                    : bid.price;
 
                 return (
-                  <TableRow key={bid.id} className="border-gray-800 hover:bg-[#2a2a2a]">
+                  <TableRow
+                    key={bid.id}
+                    className="border-gray-800 hover:bg-[#2a2a2a]"
+                  >
                     <TableCell className="font-medium">
-                      <Link 
+                      <Link
                         to={`/items/${bid.itemId}`}
                         className="hover:text-[#256af4] transition-colors"
                       >
@@ -111,13 +134,21 @@ export function MyBidsPage() {
                       </Link>
                     </TableCell>
                     <TableCell>
-                      <PriceDisplay amount={bidPrice} showIcon={true} showCurrency={false} />
+                      <PriceDisplay
+                        amount={bidPrice}
+                        showIcon={true}
+                        showCurrency={false}
+                      />
                     </TableCell>
-                    <TableCell className="text-sm text-gray-400">{formatDateTime(bid.itemEndTime)}
+                    <TableCell className="text-sm text-gray-400">
+                      {formatDateTime(bid.itemEndTime)}
                     </TableCell>
                     <TableCell>
                       {isEnded ? (
-                        <Badge variant="outline" className="border-red-600 text-red-500">
+                        <Badge
+                          variant="outline"
+                          className="border-red-600 text-red-500"
+                        >
                           Ended
                         </Badge>
                       ) : (
@@ -131,7 +162,11 @@ export function MyBidsPage() {
                     </TableCell>
                     <TableCell className="text-right">
                       <Link to={`/items/${bid.itemId}`}>
-                        <Button variant="ghost" size="sm" className="hover:bg-[#256af4] hover:text-white">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="hover:bg-[#256af4] hover:text-white"
+                        >
                           <Eye className="h-4 w-4 mr-2" />
                           View Item
                         </Button>
