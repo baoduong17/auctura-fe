@@ -34,7 +34,7 @@ export function BidFormSection({
 }: BidFormSectionProps) {
   if (!isActive) {
     return (
-      <Alert className="bg-gray-800 border-gray-700">
+      <Alert className="bg-background border text-primary">
         <AlertDescription>
           This auction has ended. Bidding is no longer available.
         </AlertDescription>
@@ -47,7 +47,7 @@ export function BidFormSection({
   }
 
   return (
-    <Card className="bg-card border">
+    <Card className="bg-background border">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Gavel className="h-5 w-5" />

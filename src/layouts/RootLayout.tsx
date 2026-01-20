@@ -36,14 +36,12 @@ const routeBreadcrumbs: Record<string, { label: string; path?: string }[]> = {
 };
 
 export function RootLayout() {
-  const checkAuth = useAuthStore((state) => state.checkAuth);
   const initialize = useAuthStore((state) => state.initialize);
   const location = useLocation();
 
   useEffect(() => {
     initialize();
-    checkAuth();
-  }, [checkAuth, initialize]);
+  }, [initialize]);
 
   const breadcrumbs = routeBreadcrumbs[location.pathname] || [];
 
@@ -71,7 +69,7 @@ export function RootLayout() {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
-        <header className="sticky top-0 z-40 flex h-14 shrink-0 items-center gap-4 px-4">
+        <header className="sticky top-0 z-40 flex h-14 shrink-0 items-center gap-4 px-4 bg-background">
           <SidebarTrigger />
 
           {dynamicBreadcrumbs.length > 0 && (
@@ -81,7 +79,7 @@ export function RootLayout() {
                   <BreadcrumbLink asChild>
                     <Link
                       to="/marketplace"
-                      className="flex items-center gap-1.5 hover:text-white"
+                      className="flex items-center gap-1.5 hover:text-primary-foreground text-primary"
                     >
                       <Home className="h-4 w-4" />
                       <span>Home</span>
@@ -97,14 +95,14 @@ export function RootLayout() {
                       <BreadcrumbSeparator className="text-gray-500" />
                       <BreadcrumbItem>
                         {isLast || !segment.path ? (
-                          <BreadcrumbPage className="text-white">
+                          <BreadcrumbPage className="text-primary">
                             {segment.label}
                           </BreadcrumbPage>
                         ) : (
                           <BreadcrumbLink asChild>
                             <Link
                               to={segment.path}
-                              className="hover:text-white"
+                              className="hover:text-primary-foreground text-primary"
                             >
                               {segment.label}
                             </Link>

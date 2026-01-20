@@ -1,8 +1,6 @@
-// store/auth.store.ts
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { User, AuthTokens } from '@/types/auth';
-import { authService } from '@/services/auth.service';
 import { storeTokens, clearStoredTokens, getStoredTokens, setTokenRefreshCallback } from '@/services/api.config';
 import { SocketConnection } from '@/socket/socket';
 
@@ -17,13 +15,12 @@ interface AuthStore {
     updateUser: (user: User) => void;
     login: (tokens: AuthTokens, user: User) => void;
     logout: () => void;
-    checkAuth: () => Promise<void>;
     initialize: () => void;
 }
 
 export const useAuthStore = create<AuthStore>()(
     persist(
-        (set, get) => ({
+        (set, _) => ({
             user: null,
             tokens: null,
             isAuthenticated: false,
@@ -68,52 +65,15 @@ export const useAuthStore = create<AuthStore>()(
             },
 
             initialize: () => {
-                // Sync tokens from localStorage on app start
                 const storedTokens = getStoredTokens();
                 if (storedTokens) {
                     set({ tokens: storedTokens });
                 }
 
-                // Set up callback for token refresh
                 setTokenRefreshCallback((newTokens: AuthTokens) => {
                     set({ tokens: newTokens });
                 });
-            },
-
-            checkAuth: async () => {
-                set({ isLoading: true });
-                try {
-                    // Check if we have stored tokens
-                    const storedTokens = get().tokens;
-                    if (!storedTokens?.accessToken) {
-                        set({ isAuthenticated: false, user: null, isLoading: false });
-                        return;
-                    }
-
-                    // Try to fetch current user
-                    const user = await authService.getCurrentUser();
-                    set({
-                        user,
-                        tokens: storedTokens,
-                        isAuthenticated: true,
-                        isLoading: false
-                    });
-                    // Connect socket for authenticated user
-                    SocketConnection.connect({
-                        userId: user.id,
-                        email: user.email,
-                    });
-                } catch (error) {
-                    // If token expired, tokens will be cleared by interceptor
-                    set({
-                        user: null,
-                        tokens: null,
-                        isAuthenticated: false,
-                        isLoading: false
-                    });
-                    clearStoredTokens();
-                }
-            },
+            }
         }),
         {
             name: 'auth-storage',

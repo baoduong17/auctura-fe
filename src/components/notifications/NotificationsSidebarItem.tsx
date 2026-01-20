@@ -19,9 +19,8 @@ export function NotificationsSidebarItem() {
     enabled: !!user?.id,
   });
 
-  // Sort by date desc
   const sortedNotifications = notifications?.sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
   );
 
   return (
@@ -31,7 +30,6 @@ export function NotificationsSidebarItem() {
           <SidebarMenuButton tooltip="Notifications">
             <Bell />
             <span>Notifications</span>
-            {/* Optional: Add a badge if unread notifications exist */}
             {notifications && notifications.some((n) => !n.isRead) && (
               <span className="absolute top-1.5 right-1.5 h-2 w-2 rounded-full bg-red-500" />
             )}
@@ -43,16 +41,16 @@ export function NotificationsSidebarItem() {
           align="start"
           sideOffset={20}
         >
-          <div className="p-4 border-b">
+          <div className="p-4">
             <h4 className="font-semibold leading-none">Notifications</h4>
           </div>
           <ScrollArea className="h-[400px]">
             {isLoading ? (
-              <div className="flex items-center justify-center h-20 text-sm text-gray-500">
+              <div className="flex items-center justify-center h-20 text-sm text-primary">
                 Loading...
               </div>
             ) : !sortedNotifications?.length ? (
-              <div className="flex items-center justify-center h-20 text-sm text-gray-500">
+              <div className="flex items-center justify-center h-20 text-sm text-primary">
                 No notifications
               </div>
             ) : (
@@ -60,7 +58,7 @@ export function NotificationsSidebarItem() {
                 {sortedNotifications.map((unit) => (
                   <div
                     key={unit.id}
-                    className={`p-4 border-b hover:bg-zinc-100/50 dark:hover:bg-zinc-800/50 cursor-pointer transition-colors ${
+                    className={`p-4 hover:bg-background/50 bg-background cursor-pointer${
                       !unit.isRead ? "bg-blue-50/50 dark:bg-blue-900/10" : ""
                     }`}
                     onClick={() =>
@@ -68,13 +66,10 @@ export function NotificationsSidebarItem() {
                       (window.location.href = unit.message.actionUrl)
                     }
                   >
-                    <div className="font-medium text-sm text-foreground mb-1">
-                      {unit.message.title}
-                    </div>
-                    <div className="text-xs text-muted-foreground line-clamp-3 mb-2">
+                    <div className="text-sm text-primary mb-2">
                       {unit.message.content}
                     </div>
-                    <div className="text-[10px] text-gray-400">
+                    <div className="text-[10px] text-muted-foreground">
                       {formatDistanceToNow(new Date(unit.createdAt), {
                         addSuffix: true,
                       })}
